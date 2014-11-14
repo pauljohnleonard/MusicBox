@@ -123,9 +123,13 @@ class Rythm:
         
         for i,div in enumerate(self.divisions):
             if div != 0:
-                self.state[i]=(self.count%div)==0
+                
+                if False:
+                    self.state[i]=(self.count%div)==0
+                else:
+                    self.state[i]=(self.count%div)<(div/2)
             else:
-                self.state[i]
+                self.state[i]=0
                 
                 
         self.client(self.state)
