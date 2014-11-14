@@ -1,8 +1,6 @@
 import sys
-sys.path.append('../MB')
   
-import MBmidi   
-import MBsetup  
+from MB import MBmidi,MBsetup  
 import time
 #  create PyMidi to initialize misi system.
 
@@ -45,7 +43,7 @@ print hex(m*128+l)
 
 for i in range(-2000,2000):
     msb,lsb=msb_lsb_raw(i)
-    print i,msb*128+lsb-0x2000
+ #   print i,msb*128+lsb-0x2000
     assert i == (msb*128+lsb)    
     
 

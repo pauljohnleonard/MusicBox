@@ -1,8 +1,7 @@
 import sys
-sys.path.append('../MB')
+
     
-import MBmidi   
-import MBsetup 
+from MB import MBmidi,MBsetup 
  
 #  create PyMidi to initialize misi system.
 
