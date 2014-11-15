@@ -1,9 +1,5 @@
 import sys
-sys.path.append('../MB')
-
-import MBmusic
-import MBmidi
-import MBsetup
+from MB import MBmusic,MBmidi,MBsetup
 import math
 import traceback
 

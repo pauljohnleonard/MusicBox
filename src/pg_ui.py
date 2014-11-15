@@ -4,12 +4,10 @@
 """
 
 import sys
-sys.path.append('../MB')
-
 import pgdriver
 from pygame import * 
 import OSC
-import MBsetup
+from  MB import MBsetup
 
 
 

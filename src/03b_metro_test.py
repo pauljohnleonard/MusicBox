@@ -1,10 +1,7 @@
 import sys
-sys.path.append('../MB')
 
-import MBmusic 
-import MBmidi
-import MB
-from players import *
+from MB import MBmusic,MBmidi,MB
+from MB.players import *
 
 mid= MBmidi.MidiEngine()
 seq=MBmusic.Sequencer()
@@ -18,8 +15,4 @@ metro=MBmusic.Metro(0,4,seq,inst,accent,weak)
 
 
 seq.start()
-    
-
-
-        
     

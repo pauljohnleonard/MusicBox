@@ -1,15 +1,12 @@
 import sys
-sys.path.append('../MB')
 
-import MB
+from MB import MB
 import subprocess
- 
+
 
 import time
-import beatclient
+from MB import beatclient
 import sys
-
-  
 
 
 class BeatObserver:
@@ -149,10 +146,16 @@ class MyFrame(wx.Frame):
     def update(self,evt):
         context=self.context
         beatlen=context.get_beatlength()
-        str1="{:5.1f}".format(60.0/beatlen)
+        if beatlen:
+            str1="{:5.1f}".format(60.0/beatlen)
+        else:
+            str1='???'
         self.bpm_val.SetLabel(str1)
         barlen=context.get_barlength()
-        str1="{:5.1f}".format(4*60.0/barlen)
+        if barlen:
+            str1="{:5.1f}".format(4*60.0/barlen)
+        else:
+            str1="???"
         self.bpm2_val.SetLabel(str1)
  
   #      self.but.after(1000,self.monit)  
@@ -209,7 +212,7 @@ class MyFrame(wx.Frame):
         return panel
 
     def pygame_frontend(self,event):
-        self.pid=subprocess.Popen([MB.PYTHON_CMD, "../FrontEnds/pg_ui.py"])
+        self.pid=subprocess.Popen([MB.PYTHON_CMD, "pg_ui.py"])
 #pid=subprocess.Popen(["ls", "../FrontEnds"])
 
         

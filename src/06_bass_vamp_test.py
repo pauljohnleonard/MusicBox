@@ -1,10 +1,10 @@
 import sys
-sys.path.append('../MB')
 
 
-import MBmusic as music
-import MBmidi 
-import MBsetup
+
+from MB import MBmusic as music
+from MB import MBmidi 
+from MB import MBsetup
 
 
 try:
@@ -13,7 +13,7 @@ try:
     midi_out_dev = mid.open_midi_out(MBsetup.MIDI_OUT_NAMES)
     
     
-    seq = music.SequencerBPM(beats_per_sec=4)
+    seq = music.SequencerBPM(beats_per_sec=2)
     
     # Score
     beats_per_bar=4

@@ -1,5 +1,4 @@
 import sys
-sys.path.append('beat')
 
 from MBmusic import *
 import beatclient

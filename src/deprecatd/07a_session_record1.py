@@ -1,27 +1,22 @@
-import sys
-sys.path.append('../MB')
-
-import time
-import MBmidi
-import MBsetup
-import MBmusic
+import sys,time
+from MB import MB
 
 
 class Band:
     
     def __init__(self):
         
-        mid = MBmidi.MidiEngine()
+        mid = MB.MidiEngine()
         
-        midi_out_dev = mid.open_midi_out(MBsetup.MIDI_OUT_NAMES)
+        midi_out_dev = mid.open_midi_out(MB.MIDI_OUT_NAMES)
             
-        seq = MBmusic.Sequencer()
+        seq = MB.Sequencer()
         # MetroNome
-        accent = MBmusic.NoteOn(61, 100)
-        weak = MBmusic.NoteOn(60, 80)
+        accent = MB.NoteOn(61, 100)
+        weak = MB.NoteOn(60, 80)
         metro_inst = midi_out_dev.allocate_channel(9)
         
-        self.metro = MBmusic.Metro(0, 4,seq, metro_inst, accent, weak) 
+        self.metro = MB.Metro(0, 4,seq, metro_inst, accent, weak) 
     
         self.bass_inst = midi_out_dev.allocate_channel(1)  
         # Vamp
@@ -29,7 +24,7 @@ class Band:
         
         
         self.solo_inst = midi_out_dev.allocate_channel(2)
-        self.solo_player=MBmusic.Player(self.solo_inst)
+        self.solo_player=MB.Player(self.solo_inst)
  
         self.seq=seq
         self.mid=mid

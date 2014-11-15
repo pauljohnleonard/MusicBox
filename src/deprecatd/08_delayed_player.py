@@ -1,11 +1,6 @@
 
-import MB
-
-import dlinkedlist
-import players
+from MB import MB,dlinkedlist,players,beatclient
 import time
-import beatclient
-
 
 # class Timer:
 #     

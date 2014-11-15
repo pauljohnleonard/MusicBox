@@ -1,7 +1,6 @@
 import sys
-sys.path.append('../MB')
 
-import MBmusic
+from MB import MBmusic
 
   
 if __name__ == "__main__":    
