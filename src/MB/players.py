@@ -22,17 +22,28 @@ class Phrase:
  
 class Phrasifier:
     """
-    Observers list of events and creates
-    a list of phrases.  
+    Observers list of events and create a list of phrases.  
     the parser is responsible for interpretting the list of events inti note events.
     tbreak is the time of silence between 2 phrases.
     
-    A client is notified when a phrase is detected.
+    [optional] A client is notified when a phrase is detected.
     
     To run in real time visit must be called periodical.
     
+    Phrases reference the original eventlist (start and end pointers)
     """
     def __init__(self,eventlist,parser,tbreak,client):
+        """
+        
+        evenlist   lsigt to be broken
+        parser
+        
+        client is informed about phrases
+        
+        tbreak -- off time to trigger a break.
+        
+        
+        """
         self.list=eventlist
         self.notesOn=NotesOn(parser)
         self.phrases=[]
@@ -76,14 +87,15 @@ class Phrasifier:
                 self.phrase_start=nxt
                 if debug:
                     print "Notify "
-                self.client.notify(self)
+                if self.client:
+                    self.client.notify(self)
                 
         self.ptr=nxt
         
                 
     def visit(self,tNow):
     
-        """ process pending events
+        """ process pending events up to tNow
         """
         while self.ptr.next !=None:
             if  self.ptr.next.time > tNow:
@@ -105,10 +117,15 @@ class Phrasifier:
             self.phrases.append(Phrase(self.phrase_start,self.ptr))
             self.phrase_start=None
             print "phrased"
-            self.client.notify(self)
+            if self.client:
+                self.client.notify(self)
   
 
 class BasicParser:
+    
+    """
+    takes a message of tokens and maps it onto pith and velocity.
+    """
     
     def parse(self,toks,data):
         val=float(data[0])          
@@ -118,13 +135,7 @@ class BasicParser:
         return pitch,vel
     
       
-#            
-#         if self.score:
-#                 beat=self.seq.get_stamp()
-#                 pitch=self.score.get_tonality(beat).get_note_of_scale(i,self.score.key)+36
-#         else:
-#                 pitch=i+48    
-#     
+
     
 class NotesOn:
     
@@ -157,7 +168,9 @@ class NotesOn:
 class Player:
     
         """
-        plays a melody instrument using the OSC  message
+        can play a melody instrument using the OSC  message
+        if memory=True records events
+        
         """
     
         def __init__(self,inst,context,parser=None,seq=None,memory=True,beat_client=None):
@@ -240,6 +253,9 @@ class Player:
 
 
         def set_ghost(self,ghost_player=None):
+            """
+            Not sure about this
+            """
            # install a ghost to monitor events and take over if need be.
             
             if not ghost_player:
@@ -254,45 +270,12 @@ class Player:
             
        
         def create_ghost(self):
+            """
+            ????
+            """
             return Player(self.inst,self.context,parser=self.parser,seq=self.seq,memory=False,beat_client=None)
             
-                
-#pPlayer.start(2,4)
-            
-                
-class PlayerWithMemory:
-    
-    def __init__(self,player,seq,client):
-        self.list=dlinkedlist.OrderedDLinkedList()
-        # put a dummy head to avoid special cases.
-        self.list.append(0.0,None)     
-        self.player=player
-        self.client=client
-        self.seq=seq
-        self.stamp=seq.get_real_stamp()
-        
-    def play(self,toks,data):
-        self.player.play(toks,data)
-        self.stamp=self.seq.get_real_stamp()
-        self.list.append(self.stamp,(toks,data))
-       
-
-        if not self.client:
-            return
-        
-       # beat=band.seq.get_beat()
-       # print "STOMP",self.stamp
-        self.client.stomp(self.stamp)
-        #print beat,toks,data
-        #sys.exit()
-        
-        
-        
-        
-    def quit(self):
-        if self.client:
-            self.beatclient.quit()
-            
+ 
                             
 class ChordPlayer:
         
@@ -337,9 +320,7 @@ class ChordPlayer:
 #            for p in self.pitches:
 #                while p < self.lowest:
 #                    p += 12
-#                
-
-            
+#                        
 class MelodyPlayer:
     
         """
@@ -391,10 +372,6 @@ class MelodyPlayer:
                 #self.seq.schedule(beat+0.05, playable)
     
     
-    
-        
-  
-
 class DelayedPlayer:
     
     """
@@ -474,9 +451,7 @@ class DelayedPlayer:
 
         self.time1=time2
         self.sched()
-        
-        
-
+                
 class PhrasePlayer:
     
     """
@@ -549,10 +524,7 @@ class PhrasePlayer:
                     break
                 
         self.sched()
-                
- 
- 
-     
+                    
 class PhrasePlayerFirer:
     
     """

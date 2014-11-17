@@ -1,8 +1,18 @@
+"""  Midi layer
+Devices
+Instruments
+MidiEngine (thread to capture midi in events) 
+
+"""
+
 import pygame.midi
 import threading
 import time
 import atexit
 # import MBsetup
+
+
+
 
 
 NOTEON=9
@@ -48,6 +58,7 @@ class MidiEngine(threading.Thread):
         self.out_dev=[]
         self.in_dev=[]
         self.running=False
+        self.daemon=True
         
         
     def open_midi_out(self,midi_out_names):

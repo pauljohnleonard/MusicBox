@@ -27,6 +27,7 @@ class Engine(Thread):
         self.tclock=0.0
         Thread.__init__(self)
         self.running=False
+        self.daemon=True
         
         
     
@@ -225,7 +226,7 @@ class SequencerBPM(Engine):
     def _play_next_dt(self):
         
         """
-        advanve beat by dt and 
+        advance beat by dt and 
         play any pending events
         """
         

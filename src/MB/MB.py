@@ -53,7 +53,7 @@ class Context:
         
         self.frozen=False       # keep sampling bar/beats until true
         
-    def create_player(self,chan,pipe_to_beat):
+    def create_player(self,chan,pipe_to_beat=False):
         inst=self.midi_out_dev.allocate_channel(chan)
         assert self.players[chan] == None
         if pipe_to_beat:
