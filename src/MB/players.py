@@ -83,12 +83,13 @@ class Phrasifier:
             self.phrase_start=nxt 
         elif not onPrev and onNow:
             if (nxt.time-self.ptr.time)> self.tbreak:
-                self.phrases.append(Phrase(self.phrase_start,self.ptr))
+                phrase=Phrase(self.phrase_start,self.ptr)
+                self.phrases.append(phrase)
                 self.phrase_start=nxt
                 if debug:
                     print "Notify "
                 if self.client:
-                    self.client.notify(self)
+                    self.client.notify(phrase)
                 
         self.ptr=nxt
         
@@ -114,11 +115,12 @@ class Phrasifier:
         
         
         if tNow-self.ptr.time > self.tbreak:
-            self.phrases.append(Phrase(self.phrase_start,self.ptr))
+            phrase=Phrase(self.phrase_start,self.ptr)
+            self.phrases.append(phrase)
             self.phrase_start=None
             print "phrased"
             if self.client:
-                self.client.notify(self)
+                self.client.notify(phrase)
   
 
 class BasicParser:
@@ -271,7 +273,7 @@ class Player:
        
         def create_ghost(self):
             """
-            ????
+            create another memoryless player using the same parser and instrument
             """
             return Player(self.inst,self.context,parser=self.parser,seq=self.seq,memory=False,beat_client=None)
             
@@ -459,9 +461,8 @@ class PhrasePlayer:
       fire()
     """
     
-    def __init__(self,phrase,seq,player):
+    def __init__(self,phrase,player):
         self.phrase=phrase
-        self.seq=seq
         self.player=player
         
         
@@ -474,7 +475,7 @@ class PhrasePlayer:
         if tloop:
             assert tloop >= self.phrase.tail.time-self.phrase.head.time
             
-        tNow=self.seq.get_stamp()
+        tNow=self.player.seq.get_stamp()
         self.t_shift=t_shift
         self.ptr=self.phrase.head
         tNext=self.ptr.time+t_shift
@@ -494,7 +495,7 @@ class PhrasePlayer:
         
         tEvent=self.ptr.time+self.t_shift    
              
-        self.seq.schedule(tEvent,self)
+        self.player.seq.schedule(tEvent,self)
             
          
     def fire(self,tt):
@@ -504,7 +505,7 @@ class PhrasePlayer:
         tt is the time according to the sequencer
         """
         
-        self.tNow=self.seq.get_stamp()
+        self.tNow=self.player.seq.get_stamp()
         
         
         while True:
