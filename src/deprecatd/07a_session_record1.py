@@ -1,7 +1,7 @@
 import sys,time
 from MB import MB
 
-
+#hmm dee dum
 class Band:
     
     def __init__(self):
