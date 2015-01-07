@@ -31,15 +31,15 @@ class Sequencer(music.Engine):
         self.prev=self.sequence.head
         self.set_tick_len(tick_len)    
            
-        self.beat=0.0
+        self.tick=0.0
         self.time=0.0
         self.callback=callback
-        self.next_beat=0
+        self.next_tick=0
      
     def set_tick_len(self,tick_len):
-        self.beats_per_sec=1.0/tick_len        
-        
-        
+        self.ticks_per_sec=1.0/tick_len
+
+
     def schedule(self,beat,event):
         # time=self.beat_to_time(beat)  
         self.sequence.insert(beat,event,self.prev)
@@ -74,45 +74,54 @@ class Sequencer(music.Engine):
         
         #print "SEQ PLAY NEXT"
         self.time+=self.dt
-        self.beat+=self.beats_per_sec*self.dt
+        self.tick+=self.ticks_per_sec*self.dt
         
         
 # call the client every tick
-        if self.beat >= self.next_beat:
+        if self.tick >= self.next_tick:
             self.callback()
-            self.next_beat+=1
+            self.next_tick += 1
              
         # if next event is after at just return
    
-        if self.prev.next.time > self.beat:
+        if self.prev.next.time > self.tick:
             return
         
    
         # play pending events   
-        while self.prev.next.time <= self.beat:
+        while self.prev.next.time <= self.tick:
             self.prev=self.prev.next
             self.prev.data.fire(self.prev.time)
 
     def get_stamp(self):
-        return self.beat
+        return self.tick
      
      
     def get_real_stamp(self):
         """
         Get the time using the clock (TODO MAKE THIS ACCURATE).
         """
-        return self.beat
+        return self.tick
     
-    def set_bpm(self,bpm):
-            self.beats_per_sec=bpm/60.0
-            
+
 
 
 def sigmoid(x):
+    """
+    Effecient numpy implementation of sigmoid function
+    :param x:
+    :return    sigmoid(x):
+    """
     return expit(numpy.clip(x,-500,500))
    
 class Rythm:
-    
+
+    """
+    Called every tick
+    Sets state[] according to divisions[]
+         That is state[i]  has a period = tick_length *divisions[i]
+    """
+
     def __init__(self,client,divisions):
         self.divisions=divisions   #  must be reference to allow on the fly control
         self.client=client
