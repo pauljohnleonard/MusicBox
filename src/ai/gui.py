@@ -1,4 +1,10 @@
+
+import config,rhythm,sequencer
+
 # allow GUI to run even if sqlalchemy is absent
+
+
+
 try:
     import sqlalchemy
     import database
@@ -11,6 +17,7 @@ except ImportError:
 import sonify
 import brain
 import stub
+import interpreter
 
 import wx
 import time
@@ -31,28 +38,12 @@ def error_message(mess,parent):
 class MyFrame(wx.Frame):
    
         
-    def __init__(self,parent, title, pos, size=(300, 250)):
+    def __init__(self,model,parent, title, pos, size=(300, 250)):
         wx.Frame.__init__(self, parent, -1, title, pos, size)
-        self.pheno=None
-        self.divisions=[32,16,8,4]
-        
+
+        self.model=model
         self.make_panels()
-        if db_loaded:
-            self.db=database.DataBase()
-        else:
-            self.db=None
-            
-        self.playing=False
-      #  self.Bind(wx.EVT_IDLE,self.monit)
-        self.editor=None
-         
-        self.sonify=sonify.Sonify()
-        
-        self.interpretter=brain.Interpretter(self.sonify)
-        
-        self.brain=None
-        self.stub=stub.Stub(None)
-        
+
 
         
     def monit(self,evt):
@@ -132,37 +123,35 @@ class MyFrame(wx.Frame):
         sizer.Add(pan)
         self.bpm.Bind(wx.EVT_SPINCTRL,self.bpm_set)
  
-        self.freq,pan=self.add_spinner(panel,50,200,100,"Train Freq mHz")
-        self.freq.Bind(wx.EVT_SPINCTRL,self.bpm_set)
-        sizer.Add(pan)
- 
-        self.depth,pan=self.add_spinner(panel,0,10,0,"Train Depth [bpm]")
-        self.depth.Bind(wx.EVT_SPINCTRL,self.bpm_set)
-        sizer.Add(pan)
- 
-        self.t_noise,pan=self.add_spinner(panel,0,10,0,"Train Noise [bpm]")
-        self.t_noise.Bind(wx.EVT_SPINCTRL,self.bpm_set)
-        sizer.Add(pan)
+        # self.freq,pan=self.add_spinner(panel,50,200,100,"Train Freq mHz")
+        # self.freq.Bind(wx.EVT_SPINCTRL,self.bpm_set)
+        # sizer.Add(pan)
+        #
+        # self.depth,pan=self.add_spinner(panel,0,10,0,"Train Depth [bpm]")
+        # self.depth.Bind(wx.EVT_SPINCTRL,self.bpm_set)
+        # sizer.Add(pan)
+        #
+        # self.t_noise,pan=self.add_spinner(panel,0,10,0,"Train Noise [bpm]")
+        # self.t_noise.Bind(wx.EVT_SPINCTRL,self.bpm_set)
+        # sizer.Add(pan)
  
         self.div_ctrl=[]
-        for div in self.divisions:
+
+        for div in self.model.divisions:
             ctrl,pan=self.add_spinner(panel,0,60,div,"DIV")
             ctrl.Bind(wx.EVT_SPINCTRL,self.div_set)
             self.div_ctrl.append(ctrl)
             sizer.Add(pan)
             
        
-        self.nn_noise,pan=self.add_spinner(panel,0,100,0,"NN Noise [%]")
-        self.nn_noise.Bind(wx.EVT_SPINCTRL,self.brain_set)
-        sizer.Add(pan)
-
+        # self.nn_noise,pan=self.add_spinner(panel,0,100,0,"NN Noise [%]")
+        # self.nn_noise.Bind(wx.EVT_SPINCTRL,self.brain_set_noise)
+        # sizer.Add(pan)
 
         self.seq_thresh,pan=self.add_spinner(panel,0,100,50,"Seq Thresh [%]")
         self.seq_thresh.Bind(wx.EVT_SPINCTRL,self.thresh_set)
         sizer.Add(pan)
 
-   
-             
         panel.SetSizer(sizer)
         
         return panel
@@ -172,27 +161,22 @@ class MyFrame(wx.Frame):
         self.divisions should be referenced by the Rythm gen.
         """
         for i,ctrl in enumerate(self.div_ctrl):
-            self.divisions[i]=ctrl.GetValue()
+            self.model.divisions[i]=ctrl.GetValue()
             
-    def brain_set(self,evt):
-        
-        self.brain.set_nn_noise(self.nn_noise.GetValue()/100.0)
-    
-        
+    # def brain_set_noise(self,evt):
+    #     self.brain.set_nn_noise(self.nn_noise.GetValue()/100.0)
+
     def thresh_set(self,evt):
-        self.interpretter.set_seq_threshold(self.seq_thresh.GetValue()/100.0)
-        
-        
-        
-        
+        self.model.interpreter.set_seq_threshold(self.seq_thresh.GetValue()/100.0)
+
         
     def bpm_set(self,evt):
-        self.stub.set_bpm(self.bpm.GetValue())
-        self.stub.set_freq(self.freq.GetValue()/1000.0)
-        self.stub.set_freq_depth(self.depth.GetValue())
-        self.stub.set_noise_depth(self.t_noise.GetValue())
+        self.model.set_bpm(self.bpm.GetValue())
+        # self.stub.set_freq(self.freq.GetValue()/1000.0)
+        # self.stub.set_freq_depth(self.depth.GetValue())
+        # self.stub.set_noise_depth(self.t_noise.GetValue())
         
-        self.console.AppendText(" BPM SET"+str(self.stub)+"\n")
+        self.console.AppendText(" BPM SET \n")
                  
     def  make_button_panel(self,parent):
         
@@ -221,13 +205,13 @@ class MyFrame(wx.Frame):
         
         
         quit.Bind(wx.EVT_BUTTON, self.OnClose)
-        kill.Bind(wx.EVT_BUTTON, self.kill_pheno)
+        kill.Bind(wx.EVT_BUTTON, self.model.kill_pheno)
         
-        creat.Bind(wx.EVT_BUTTON, self.create_pheno)   
+        creat.Bind(wx.EVT_BUTTON, self.model.create_pheno)
         
-        breed.Bind(wx.EVT_BUTTON,self.breed_pheno)
-        save.Bind(wx.EVT_BUTTON,self.save_pheno)
-        load.Bind(wx.EVT_BUTTON,self.load_pheno)
+        breed.Bind(wx.EVT_BUTTON,self.model.breed_pheno)
+        save.Bind(wx.EVT_BUTTON,self.model.save_pheno)
+        load.Bind(wx.EVT_BUTTON,self.model.load_pheno)
                          
         #panel.SetAutoLayout(True)
 
@@ -239,55 +223,11 @@ class MyFrame(wx.Frame):
    
     def OnClose(self,event):
         print "Closing"
-        if self.brain != None:
-            self.brain.quit()
-            
-        if self.stub != None:
-            self.stub.quit()
-            
+        if self.model:
+            self.model.quit()
+
         time.sleep(.2)
         self.Destroy()
 
-    def kill_pheno(self,evt):
-        pass
-        
-    def create_pheno(self,evt):
-
-        if self.brain == None:
-    
-                        
-            self.brain=brain.Brain(bpm=60,ticks_per_beat=4,divisions=self.divisions,nmod=0,nout=36,nhid=36,client=self.interpretter)
-            
-            self.brain.start()
-            self.stub.set_client(self.brain)
-            
-        self.brain.random_net()
-        self.brain.freewheel(16)
-      
- 
-        
-    def load_pheno(self,evt):
-        if not db_loaded:
-            return
-               
-        self.kill_pheno()
-        self.pheno=self.db.load_random()
-        self.build_server_pheno()
-        
-    def breed_pheno(self,evt):
-        self.kill_pheno()
-        b=ga.Breeder()
-        dad=self.pheno
-        mum=self.db.load_random()
-        child=b.mate(mum,dad)
-        self.pheno=child
-        print child
-        self.build_server_pheno()
-        
-    def save_pheno(self,evt):
-        self.db.save_nome(self.pheno)
-        
-    def load_pool(self):
-        self.db.load_all_nomes()
 
  

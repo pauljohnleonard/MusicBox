@@ -1,6 +1,6 @@
 import sys
 
-import  brain
+import  config
 import MB.midi as MBmidi
 import MB.music as MBmusic
 
@@ -35,7 +35,7 @@ class Sonify:
             self.mid.device_info()
             raise
 
-# Harp
+# bank 0
         self.inst=MBmidi.Instrument(midi_out.out,0)  
         self.inst.set_reverb(70)    
         self.inst.set_volume(127)
@@ -52,7 +52,7 @@ class Sonify:
         base=16    #        3 octave   (3*8) 
         ipitch=self.tonality.get_note_of_chordscale(i+base,self.key)
          
-        return max(min(108,ipitch),12)
+        return max(min(config.MAX_PITCH,ipitch),config.MIN_PITCH)
         
     def toScaleDrone(self,i):
         
@@ -60,7 +60,7 @@ class Sonify:
         i=i%len(self.scale_drone)
         ipitch=self.scale_root+36+self.scale_drone[i]
         
-        return max(min(108,ipitch),12)
+        return max(min(config.MAX_PITCH,ipitch),config.MIN_PITCH)
    
 
    
@@ -75,9 +75,10 @@ class Sonify:
         self.inst.note_off(pit,100)
         
                     
-      
-    def quit(self):        
-        print " Shutting down midi "
+    def size(self):
+        return config.SONIFY_SIZE
 
 
 
+    def quit(self):
+        self.mid.quit()

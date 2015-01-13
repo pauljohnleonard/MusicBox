@@ -1,9 +1,10 @@
 
 
 import wx
-import gui
+import gui,model
  
-app = wx.PySimpleApp()
-mainFrame = gui.MyFrame(None, title='PYO-GA', pos=(50,50), size=(800,300))
+app = wx.App()
+model=model.Model()
+mainFrame = gui.MyFrame(model,None, title='PYO-GA', pos=(50,50), size=(800,300))
 mainFrame.Show()
 app.MainLoop()

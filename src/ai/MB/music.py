@@ -385,11 +385,7 @@ class GrooverFactory:
         
     def create(self,when):
         return Groover(when,self.seq,self.data,self.player)
-        
-        
 
-        
-        
 class Repeater:
     """  Calls the given func periodically
     """
@@ -411,14 +407,10 @@ class Repeater:
     def fire(self,beat):
         self.func(beat)
         self.seq.schedule(beat+self.period,self)
-        
-
-
-     
      
 class Score:
  
- 
+
     def __init__(self, nbars,beats_per_bar,key):
         self.beats_per_bar = beats_per_bar 
         self.bars_per_section = nbars
@@ -447,18 +439,8 @@ class Score:
         beati = int(beat+self.look_ahead)
         return self.tonalities[beati % self.beats_per_section]
     
-#    
-#    def fire(self,beat):
-#        # print "Score fire "
-#        self.seq.schedule(self.beat, self)
-##        if self.beat % self.beats_per_bar == 0: 
-##            self.beat_one_time = self.beat
-#        
-#    def get_count(self):
-#        return self.beat % self.beats_per_bar      
-#    
-#    def get_time(self):
-#        return self.seq.beat
+#
+
  
 class Tonality:
     
