@@ -1,5 +1,5 @@
 import random,math
-from MB import music
+from MB import MBmusic as music
 
 class Stub:
     
@@ -49,6 +49,7 @@ class Stub:
         if self.client==None:
             return
         
-        bpm=self.bpm_average+self.freq_depth*math.sin(2*math.pi*self.freq*self.time)
-        bpm+=self.noise_depth*self.noise()
+        bpm=self.bpm_average\
+        # +self.freq_depth*math.sin(2*math.pi*self.freq*self.time)
+        # bpm+=self.noise_depth*self.noise()
         self.client.set_bpm(bpm)
