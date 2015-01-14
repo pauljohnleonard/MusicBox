@@ -3,7 +3,8 @@ __author__ = 'pjl'
 
 
 
-import config,rhythm,sequencer
+import config,rhythm
+from MB import MBmusic
 
 # allow GUI to run even if sqlalchemy is absent
 
@@ -20,15 +21,18 @@ except ImportError:
 
 import sonify
 import brain
-import stub
 import interpreter
-
+import random
 
 class Model:
 
 
     def __init__(self):
+
         self.pheno=None
+
+
+
         self.divisions=[32,16,8,4]
 
         if db_loaded:
@@ -38,7 +42,7 @@ class Model:
 
         self.playing=False
 
-        self.sonify=sonify.Sonify()
+        self.sonify = sonify.Sonify()
 
         self.interpreter=interpreter.Interpretter(self.sonify)
 
@@ -46,10 +50,15 @@ class Model:
 
 
             # sequencer will call the rhythm generator tick every dt
-        self.seq=sequencer.Sequencer(callback=self.tick)
+        self.seq=MBmusic.SequencerBPM()
         self.brain=brain.Brain(nin=self.rhythm.size(),nhid=config.NHIDDEN,output=self.interpreter)
 
         self.set_bpm(config.INIT_BPM)
+        times =   [0.,.25, .5, .75]
+
+
+        groover = MBmusic.Groover(0.0,self.seq,times,self,loop=1.0)
+
         self.seq.start()
 
 
@@ -59,9 +68,10 @@ class Model:
 
     def set_bpm(self,bpm):
         self.bpm=bpm
-        dt = 60.0/config.TICKS_PER_BEAT/bpm
-        self.seq.set_tick_len(dt)
+        self.seq.set_bpm(bpm)
 
+    def play_count(self,count,beat):
+        self.tick()
 
     def tick(self):
         # print "Model Tick"

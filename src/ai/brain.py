@@ -1,6 +1,6 @@
 import numpy,random
 from scipy.special import expit
-import rhythm,sequencer
+import rhythm
     
 
 
@@ -53,20 +53,21 @@ class Layer:
             
 class ElmanNet:
 
-    def __init__(self,nin,nhid,nout):
+    def __init__(self,nin,nhid,nout,feedback=0.0):
         
         self.nin=nin
         self.nhid=nhid
         self.nout=nout
         self.layer1=Layer(nin+nhid+1,nhid,sigmoid)
         self.layer2=Layer(nhid+1,nout,sigmoid)
+        self.feedback=feedback
 
     
     def fire(self,input):
         self.layer1.input[:self.nin]=input
         
  #  feed back output of layer1 (which should be stored as input to layer2
-        self.layer1.input[self.nin:-1]=self.layer2.input[:self.nhid]
+        self.layer1.input[self.nin:-1]=  self.layer2.input[:self.nhid]+self.layer1.input[self.nin:-1]*self.feedback
         
         self.layer1.input[-1]=1.0
         
@@ -85,7 +86,7 @@ class Brain:
     
     def __init__(self,nin,output,nhid):
 
-        
+        numpy.random.seed(1)
         self.nin=nin
         self.nhid=nhid
         self.nout=output.size()

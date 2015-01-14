@@ -1,5 +1,5 @@
 
-import config,rhythm,sequencer
+import config,rhythm
 
 # allow GUI to run even if sqlalchemy is absent
 
@@ -123,9 +123,9 @@ class MyFrame(wx.Frame):
         sizer.Add(pan)
         self.bpm.Bind(wx.EVT_SPINCTRL,self.bpm_set)
  
-        # self.freq,pan=self.add_spinner(panel,50,200,100,"Train Freq mHz")
-        # self.freq.Bind(wx.EVT_SPINCTRL,self.bpm_set)
-        # sizer.Add(pan)
+        self.feedback,pan=self.add_spinner(panel,0,100,0,"Elman feedback %")
+        self.feedback.Bind(wx.EVT_SPINCTRL,self.elman_feedback)
+        sizer.Add(pan)
         #
         # self.depth,pan=self.add_spinner(panel,0,10,0,"Train Depth [bpm]")
         # self.depth.Bind(wx.EVT_SPINCTRL,self.bpm_set)
@@ -162,7 +162,10 @@ class MyFrame(wx.Frame):
         """
         for i,ctrl in enumerate(self.div_ctrl):
             self.model.divisions[i]=ctrl.GetValue()
-            
+
+    def elman_feedback(self,evt):
+        self.model.brain.net.feedback=self.feedback.GetValue()/100.0
+
     # def brain_set_noise(self,evt):
     #     self.brain.set_nn_noise(self.nn_noise.GetValue()/100.0)
 

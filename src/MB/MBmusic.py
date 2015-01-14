@@ -329,28 +329,31 @@ class Groover:
         count is incremented each call.
     """
 
-    def __init__(self,start,seq,data,player):
+    def __init__(self,start,seq,times,player,loop=None):
         
         """
-        start --  time of groove start (may not be first event)
-        seq --    sequencer
-        data --   info passed to player
-        player -- plays the event using play_count(count,data)
+        start:   time of groove start (first event is start+data[0])
+        seq:     sequencer
+        data:    info passed to player
+        player:  plays the event using play_count(count,data)
+        loop:    loop length OR None for single shot
         """ 
         
-        self.times=data.times 
-        self.data=data       
+        self.times=times
         self.seq=seq
         self.beat_ref=start
-        self.iter=self.times.__iter__()
-        self._schedule()
-       
         self.count=0
         self.n=len(self.times)
         self.player=player
-        
+        self.loop=loop
+        if self.loop:
+            assert self.loop > self.times[-1]
+        self._schedule()
+       
+
+
     def _schedule(self):
-        beat=self.iter.next()+self.beat_ref
+        beat=self.times[self.count]+self.beat_ref
         self.seq.schedule(beat,self)
          
         
@@ -358,11 +361,15 @@ class Groover:
         
         #print self.count," Groove fire",seq.beat
         
-        self.player.play_count(self.count,self.data,beat)
+        self.player.play_count(self.count,beat)
         self.count+=1
         if self.count >= self.n:
-            return
-             
+            if self.loop is None:
+                return
+            else:
+                self.beat_ref+=self.loop
+                self.count=0
+
         self._schedule()       
         
         

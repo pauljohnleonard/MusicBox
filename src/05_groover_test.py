@@ -10,23 +10,24 @@ seq=MBmusic.SequencerBPM()
 
 class Player:
     
-    def play_count(self,count,data,beat):
-        print count,seq.beat,data.times[count]+when,beat
+    def play_count(self,count,beat):
+        print count,seq.beat,beat
  
-class Data:
-    
-    def __init__(self):
-        self.times =   [0.3,  1.0, 2.0, 3.0]
+
+times =   [0.3,  1.0, 2.0, 3.0]
      
 player=Player()
-when=1.2
-data=Data()
-groover=MBmusic.Groover(when,seq,data,player)
+when=0.0
+
+groover=MBmusic.Groover(when,seq,times,player,loop=4)
 
 
 
 
 seq.start()
+
+import time
+time.sleep(10)
     
 
 
