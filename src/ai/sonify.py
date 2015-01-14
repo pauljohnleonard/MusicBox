@@ -1,8 +1,8 @@
 import sys
 
 import  config
-import MB.midi as MBmidi
-import MB.music as MBmusic
+from  MB import MBmidi
+from MB import MBmusic
 
 
 

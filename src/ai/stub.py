@@ -1,5 +1,5 @@
 import random,math
-from MB import music
+from MB import MBmusic as music
 
 class Stub:
     

@@ -1,7 +1,7 @@
 
 
 import wx
-import gui,model
+from ai import gui,model
  
 app = wx.App()
 model=model.Model()

@@ -1,7 +1,10 @@
 __author__ = 'pjl'
 
 
-from MB import music,linkedlist
+from MB import MBmusic as music
+from MB import linkedlist
+
+
 import sys
 
 class Sequencer(music.Engine):
