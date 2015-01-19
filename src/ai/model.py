@@ -51,7 +51,7 @@ class Model:
 
             # sequencer will call the rhythm generator tick every dt
         self.seq=MBmusic.SequencerBPM()
-        self.brain=brain.Brain(nin=self.rhythm.size(),nhid=config.NHIDDEN,output=self.interpreter)
+        self.brain=brain.Brain(nin=self.rhythm.size(),output=self.interpreter)
 
         self.set_bpm(config.INIT_BPM)
         times =   [0.,.25, .5, .75]
@@ -60,6 +60,10 @@ class Model:
         groover = MBmusic.Groover(0.0,self.seq,times,self,loop=1.0)
 
         self.seq.start()
+
+
+    def set_nhid(self,nhid):
+        self.nhid=nhid
 
 
     def kill_pheno(self,evt):
@@ -80,7 +84,7 @@ class Model:
 
     def create_pheno(self,evt):
 
-        self.brain.random_net()
+        self.brain.random_net(self.nhid)
         self.brain.freewheel(16)
 
 

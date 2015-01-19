@@ -59,17 +59,20 @@ class MyFrame(wx.Frame):
             
     
     def make_panels(self):
-        
-        
-        spin=self.make_spin_panel(self)
-        
+
+        realtime=self.make_spin_panel(self)
+        initpan=self.make_init_panel(self)
+
         but=self.make_button_panel(self)
+
         self.cmdbox = wx.TextCtrl (self, -1, style=wx.TE_PROCESS_ENTER )
         self.console = wx.TextCtrl(self, -1, " server console ", style=wx.TE_MULTILINE)
         
         box = wx.BoxSizer(wx.VERTICAL)
         
-        box.Add(spin, 2, wx.EXPAND)
+        box.Add(realtime, 2, wx.EXPAND)
+        box.Add(initpan, 2, wx.EXPAND)
+
         box.Add(but, 1, wx.EXPAND)
         box.Add(self.cmdbox,0,wx.EXPAND)
         box.Add(self.console,4,wx.EXPAND)
@@ -155,7 +158,30 @@ class MyFrame(wx.Frame):
         panel.SetSizer(sizer)
         
         return panel
-     
+
+    def  make_init_panel(self,parent):
+
+        panel=wx.Panel(parent,-1, style=wx.SUNKEN_BORDER)
+
+        sizer=wx.BoxSizer(wx.HORIZONTAL)
+
+        self.nhid,pan=self.add_spinner(panel,0,1000,config.NHIDDEN,"nHidden ")
+        sizer.Add(pan)
+        self.bpm.Bind(wx.EVT_SPINCTRL,self.nhid_set)
+
+
+        panel.SetSizer(sizer)
+
+        return panel
+
+
+    def nhid_set(self,evt):
+        """
+        self.divisions should be referenced by the Rythm gen.
+        """
+        self.model.set_nhid(self.nhid.GetValue())
+
+
     def div_set(self,evt):
         """
         self.divisions should be referenced by the Rythm gen.

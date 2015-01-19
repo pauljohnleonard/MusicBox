@@ -84,11 +84,10 @@ class Brain:
     
     """
     
-    def __init__(self,nin,output,nhid):
+    def __init__(self,nin,output):
 
         numpy.random.seed(1)
         self.nin=nin
-        self.nhid=nhid
         self.nout=output.size()
 
         self.input=numpy.zeros(self.nin)
@@ -97,7 +96,8 @@ class Brain:
         self.net=None
 
             
-    def random_net(self):
+    def random_net(self,nhid):
+        self.nhid=nhid
         self.net=ElmanNet(self.nin,self.nhid,self.nout)
 
     def quit(self):
