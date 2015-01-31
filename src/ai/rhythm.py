@@ -5,6 +5,10 @@ import config
 import numpy
 
 
+
+type_spike,type_square=range(2)
+
+
 class Rhythm:
 
     """
@@ -17,13 +21,19 @@ class Rhythm:
         self.divisions=divisions   #  must be reference to allow on the fly control
         self.count=0
         self.state=numpy.zeros(len(divisions),dtype='i')
+        self.type=type_spike
+
+
+    def set_type(self,type):
+        self.type=type
+
 
     def tick(self):
 
         for i,div in enumerate(self.divisions):
             if div != 0:
 
-                if config.SPIKES:
+                if self.type == type_spike:
                     self.state[i]=(self.count%div)==0
                 else:
                     self.state[i]=(self.count%div)<(div/2)

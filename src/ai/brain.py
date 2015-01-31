@@ -86,7 +86,7 @@ class Brain:
     
     def __init__(self,nin,output):
 
-        numpy.random.seed(1)
+        #  numpy.random.seed(1)
         self.nin=nin
         self.nout=output.size()
 
@@ -113,18 +113,15 @@ class Brain:
         :return:
         """
         if self.net == None:
-            return
+            return False
         
         assert len(state) == self.nin
 
         self.input[:len(state)]=state
 
-        out=self.net.fire(self.input)
-        
-        if self.output != None:
-            self.output.process(out)
-        else:
-            print state,"->",out
+        self.out=self.net.fire(self.input)
+        return True
+
             
     def freewheel(self,ncycle):
         

@@ -24,15 +24,55 @@ import brain
 import interpreter
 import random
 
+
+class Channel:
+
+
+
+    def __init__(self,sonify,channel_id,model):
+
+        self.channel_id=channel_id
+        self.interpreter=interpreter.Interpretter(sonify,channel_id)
+        self.brain=brain.Brain(nin=model.rhythm.size(),output=self.interpreter)
+
+        self.model=model
+
+
+    def tick(self,pulse):
+        """
+        Use brain to process the pulse
+        :param pulse:
+        :return:
+        """
+        if self.brain.tick(pulse):
+            self.interpreter.process(self.brain.out)
+
+    def set_nhid(self,nhid):
+        self.nhid=nhid
+
+    def kill_pheno(self,evt):
+        pass
+
+    def create_pheno(self,evt):
+
+        self.brain.random_net(self.nhid)
+        self.brain.freewheel(16)
+
+    def set_elman_feedback(self,val):
+        if self.brain.net:
+            self.brain.net.feedback=val
+
+
+
 class Model:
 
 
-    def __init__(self):
+    def __init__(self,nChannel=1):
 
         self.pheno=None
 
 
-
+        channel_ids=[0,1,7,5]
         self.divisions=[32,16,8,4]
 
         if db_loaded:
@@ -42,50 +82,43 @@ class Model:
 
         self.playing=False
 
-        self.sonify = sonify.Sonify()
-
-        self.interpreter=interpreter.Interpretter(self.sonify)
+        self.sonify = sonify.Sonify(channel_ids)
 
         self.rhythm = rhythm.Rhythm(divisions=self.divisions)
-
-
-            # sequencer will call the rhythm generator tick every dt
-        self.seq=MBmusic.SequencerBPM()
-        self.brain=brain.Brain(nin=self.rhythm.size(),output=self.interpreter)
-
-        self.set_bpm(config.INIT_BPM)
         times =   [0.,.25, .5, .75]
 
 
-        groover = MBmusic.Groover(0.0,self.seq,times,self,loop=1.0)
+
+
+       # sequencer will call the rhythm generator tick every dt
+        self.seq=MBmusic.SequencerBPM()
+        self.set_bpm(config.INIT_BPM)
+        self.groover = MBmusic.Groover(0.0,self.seq,times,self,loop=1.0)
+        self.channels=[]
+
+        for i in channel_ids:
+            chan=Channel(self.sonify,i,self)
+            self.channels.append(chan)
+
 
         self.seq.start()
 
-
-    def set_nhid(self,nhid):
-        self.nhid=nhid
-
-
-    def kill_pheno(self,evt):
-        pass
 
 
     def set_bpm(self,bpm):
         self.bpm=bpm
         self.seq.set_bpm(bpm)
 
-    def play_count(self,count,beat):
-        self.tick()
 
-    def tick(self):
+
+
+    def play_count(self,count,beat):
+
         # print "Model Tick"
         self.rhythm.tick()
-        self.brain.tick(self.rhythm.state)
 
-    def create_pheno(self,evt):
-
-        self.brain.random_net(self.nhid)
-        self.brain.freewheel(16)
+        for chan in self.channels:
+            chan.tick(self.rhythm.state)
 
 
 

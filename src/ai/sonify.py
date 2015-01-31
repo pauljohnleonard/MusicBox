@@ -22,7 +22,7 @@ MIDI_OUT_NAMES=["Qsynth1",
 class Sonify:
     
     
-    def __init__(self):
+    def __init__(self,channel_ids):
        
         self.tonality=MBmusic.ii
         self.key=MBmusic.D
@@ -35,11 +35,18 @@ class Sonify:
             self.mid.device_info()
             raise
 
+
+        self.insts={}
+
+
+
 # bank 0
-        self.inst=MBmidi.Instrument(midi_out.out,0)  
-        self.inst.set_reverb(70)    
-        self.inst.set_volume(127)
-        
+        for i in channel_ids:
+            inst=MBmidi.Instrument(midi_out.out,i)
+            inst.set_reverb(70)
+            inst.set_volume(127)
+            self.insts[i]=inst
+
         atexit.register(self.quit)
         
         
@@ -64,15 +71,15 @@ class Sonify:
    
 
    
-    def note_on(self,ii,vel):
+    def note_on(self,chan,ii,vel):
         
         vel=int(math.sqrt(vel)*127)    
         pit=self.toScale(ii)
-        self.inst.note_on(pit,vel)
+        self.insts[chan].note_on(pit,vel)
  
-    def note_off(self,ii):
+    def note_off(self,chan,ii):
         pit=self.toScale(ii)
-        self.inst.note_off(pit,100)
+        self.insts[chan].note_off(pit,100)
         
                     
     def size(self):
