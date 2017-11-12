@@ -15,7 +15,7 @@ def get_osc_ip():
 
 
         for ip in socket.gethostbyname_ex(socket.gethostname())[2]:
-            print ip
+            print( ip )
             
         for ip in socket.gethostbyname_ex(socket.gethostname())[2]:
              if not ip.startswith("127."):
@@ -36,7 +36,7 @@ elif machine =="Darwin":
     PYTHON_CMD="/usr/local/bin/python"
     
 else:
-    print "Please set PYTHON_CMD for:",machine 
+    print ("Please set PYTHON_CMD for:",machine )
     
     
 import subprocess

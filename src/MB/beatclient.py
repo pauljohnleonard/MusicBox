@@ -1,5 +1,5 @@
 import subprocess,inspect
-import atexit,time,Queue,threading
+import atexit,time,queue,threading
 import MB
 
 class Client:
@@ -37,7 +37,7 @@ class Client:
 
         self.err_t=threading.Thread(target=self._pipe_reader)
        
-        self.q=Queue.Queue()
+        self.q=queue.Queue()
         self.err_t.start()
         self.tempo=-1
             
@@ -65,7 +65,7 @@ class Client:
            
             text=self.stdout.readline()
             if len(text) == 0:
-                print " end of file "
+                print(" end of file ")
                 return
             #print ":",text
             if self.err_t == None:
@@ -129,7 +129,7 @@ class Client:
         
         
     def quit(self):
-        print "BEAT CLIENT quitting  .... "
+        print ("BEAT CLIENT quitting  .... ")
         if self.proc == None:
             return
         self._send("time.sleep(0.5)")
@@ -137,11 +137,11 @@ class Client:
         
         self.pipe.close()
         #self.stdout.close()
-        print " waiting for client to die"
+        print( " waiting for client to die")
         self.proc.wait()
-        print " dead"
+        print(" dead")
         self.proc = None
-        print " . . . . . quitted "
+        print(" . . . . . quitted ")
         
             
         
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     while True:
         foo=raw_input('cmd (type "quit" to exit):')
     
-        print foo
+        print (foo)
         if foo == "quit":
             c.quit()
             time.sleep(1.0)
@@ -172,7 +172,7 @@ if __name__ == "__main__":
         else:
             barl2=None
             
-        print tt,c.get_barlength(),barl2
+        print (tt,c.get_barlength(),barl2)
         
 #         text="stomper.add_event("+str(tt)+",1.0)"
 #         #print text
@@ -182,5 +182,5 @@ if __name__ == "__main__":
         
    
         
-    print "OK I quit" 
+    print ("OK I quit")
     #c.send("quit")    

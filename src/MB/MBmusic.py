@@ -1,8 +1,8 @@
-import linkedlist
+from .MB import linklist
 import sys
 import time
 from threading import Thread
-import MBsetup as MB
+from . import MBsetup as MB
 
 CSI="\x1B["
 RED='\033[91m'
@@ -74,7 +74,7 @@ class Engine(Thread):
             # yeild to other threads
                 time.sleep(sleep_time)
             else:
-                print '>',
+                print ('>',)
                    
             self.call_back()
             tnext+=self.dt
@@ -82,13 +82,13 @@ class Engine(Thread):
             
     def stop(self):
         
-        print  "Engine stopping"
+        print ( "Engine stopping" )
         if not self.running:     # make sure we don't do this twice
             return
         
         self.running=False      # flag deamon to halt.
         self.join()            
-        print  "Engine stopped (threads joined)"
+        print  ("Engine stopped (threads joined)")
 
 
 
@@ -126,7 +126,7 @@ class Sequencer(Engine):
         
         # time=self.beat_to_time(beat)  
         if at+self.dt < self.time:
-            print RED+"Schedule underrun "+ENDC,at,self.time
+            print (RED+"Schedule underrun "+ENDC,at,self.time)
             
         self.sequence.insert(at,event,self.prev)
       
@@ -544,7 +544,7 @@ class Metro:
             tnow=time.time()
             delta=tnow-self.tlast
             self.tlast=tnow
-            print " Metro.fire",delta
+            print ( " Metro.fire",delta)
     
         if self.count %self.beats_per_bar == 0:
             self.accent.send(self.inst)

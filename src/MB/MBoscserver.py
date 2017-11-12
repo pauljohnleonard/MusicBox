@@ -45,6 +45,7 @@ class Server:
         try:
             self.handle(addr,stuff,self.recorder)
         except: 
+            '''
             print "Client error handling "
             print "---"
             print "received new osc msg from %s" % OSC.getUrlStr(source)
@@ -53,17 +54,19 @@ class Server:
             print "data %s" % stuff
             print "---"
             print "Unexpected error:", sys.exc_info()[0]
+            '''
+
             traceback.print_exc()
   
     def run(self):
         # just checking which handlers we have added
-        print "Registered Callback-functions are :"
+        print ("Registered Callback-functions are :")
         for addr in self.s.getOSCAddressSpace():
-            print addr
+            print (addr)
         
         
         # Start OSCServer
-        print "\nStarting OSCServer. Use ctrl-C to quit."
+        print ("\nStarting OSCServer. Use ctrl-C to quit.")
         self.st = threading.Thread( target = self.s.serve_forever )
         self.st.start()
     
@@ -71,10 +74,10 @@ class Server:
     def quit(self):  
         
         self.s.close()
-        print "Waiting for Server-thread to finish"
+        print ("Waiting for Server-thread to finish")
         
         self.st.join() ##!!!
-        print "Done"
+        print ("Done")
 
 
             
@@ -89,7 +92,7 @@ class Server:
                 recorder.record(addr,data)
       
             if self.map==None:
-                print addr,data
+                print (addr,data)
                 return
             
             toks=addr.split('/')
@@ -104,7 +107,7 @@ class Server:
                 func(toks[3:],data)
             else:
                 if Server.debug:
-                    print " No musicbox handler for:", addr
+                    print (" No musicbox handler for:", addr)
   
     
 if __name__ == "__main__":
@@ -117,7 +120,7 @@ if __name__ == "__main__":
 
     xx = raw_input(" Hit CR TO QUIT")
 
-    print "\nClosing OSCServer."
+    print ("\nClosing OSCServer.")
     server.stop()
             
             

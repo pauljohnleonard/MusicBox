@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-
 class Node:
     
     def __init__(self,time,data,next=None):
@@ -23,13 +21,11 @@ class OrderedLinkedList:
        TODO: delete nodes
     """
        
-    
     def __init__(self):
         self.head=None
         
-    
 
-    def insert(self,time,data,after):
+    def insert(self,time,data,after=None):
         """
         create a new Node with data 
         insert into list so it is assending order
@@ -63,7 +59,7 @@ class OrderedLinkedList:
     
     def debug(self):
           for x in self:
-              print x.time,x.data
+              print(x.time,x.data)
 
 
 class LinkedListIterator:
@@ -78,7 +74,8 @@ class LinkedListIterator:
         
         #print "Hello"
   
-    def next(self):
+  
+    def __next__(self):
         
         #print "Next"
         # if list is empty we need this

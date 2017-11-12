@@ -1,13 +1,13 @@
 import sys
 
-from MBmusic import *
-import beatclient
+from .MBmusic import *
+from . import beatclient
 
-from MBmidi import *
-from MBsetup import *
-from MBoscserver import *
-from players import *
-import MBsetup
+from . import MBmidi
+from .MBsetup import *
+from .MBoscserver import *
+from .players import *
+from . import MBsetup
 
 
 _context=None
@@ -92,7 +92,7 @@ class Context:
     def quit(self):
         
         self.seq.quit()
-        print ' Stopping midi engine '  
+        print (' Stopping midi engine ') 
         self.mid.quit()
         self.osc_driver.quit()
         self.beat_client.quit()
@@ -106,12 +106,12 @@ class Context:
     
     def freeze(self):
         if self.frozen:
-            print "Already frozen"
+            print ("Already frozen")
             return
         
         self.frozen=True
         
-        print " Freezing: ",self.beat_length, self.bar_length
+        print (" Freezing: ",self.beat_length, self.bar_length)
         
     def get_barlength(self):
         if not self.frozen:

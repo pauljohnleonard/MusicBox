@@ -69,7 +69,7 @@ class MidiEngine(threading.Thread):
                 if dev.output:
                 
                     if name in dev.name:
-                        print "OPENING MIDI OUT", dev.id,dev.name
+                        print("OPENING MIDI OUT", dev.id,dev.name)
 
                         midi_out_id=dev.id
                         o=pygame.midi.Output(midi_out_id, 0)
@@ -91,7 +91,7 @@ class MidiEngine(threading.Thread):
                 if dev.input:
         
                     if name in dev.name:
-                        print "OPENING MIDI IN", dev.id,dev.name
+                        print ("OPENING MIDI IN", dev.id,dev.name)
                         midi_in_id=dev.id
                         o=pygame.midi.Input(midi_in_id, 0)
                         self.in_dev.append(o)
@@ -155,17 +155,17 @@ class MidiEngine(threading.Thread):
             else:
                 time.sleep(0.001)
                  
-        print " quitting pygame.midi deamon"
+        print(" quitting pygame.midi deamon")
             
     def _halt(self):
         
-        print  "MidiEngine  Halting Sequener"
+        print( "MidiEngine  Halting Sequener")
         if not self.running:     # make sure we don't do this twice
             return
         
         self.running=False      # flag deamon to halt.
         self.join()             # wait for thread to halt
-        print  "Midi Engine Threads joined OK"
+        print  ("Midi Engine Threads joined OK")
 #        self.cleanup()
         
     def quit(self):
@@ -183,7 +183,7 @@ class MidiEngine(threading.Thread):
                     
         pygame.midi.quit()
            
-        print  "MidiEngine Halted"
+        print  ("MidiEngine Halted")
      
 
 class Instrument:
@@ -208,7 +208,7 @@ class Instrument:
         be off for this to work correctly.
         """
         if DEBUGGING:
-            print self.channel,note,velocity
+            print (self.channel,note,velocity)
             
         self.midi_out.write_short(0x90+self.channel, note, velocity)
 
@@ -237,7 +237,7 @@ class Instrument:
     def set_volume(self,val):
         
         #  7 vol 11 expression
-        print " Set volume",val
+        print (" Set volume",val)
         self.midi_out.write_short(0xb0+self.channel,7,val)
         
         

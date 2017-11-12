@@ -4,7 +4,7 @@ from MB import MBmusic
 import time
 
 def callback():
-    print time.time()-tref
+    print (time.time()-tref)
     
 
 dt=1.0
