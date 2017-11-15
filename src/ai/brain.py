@@ -3,8 +3,6 @@ from scipy.special import expit
 import rhythm
     
 
-
-
 def sigmoid(x):
     """
     Effecient numpy implementation of sigmoid function
@@ -134,8 +132,6 @@ class Brain:
 
 
 if __name__ == "__main__":
-
-
 
     def test():
         el.fire(input)

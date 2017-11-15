@@ -1,5 +1,5 @@
 import sys
-  
+sys.path.append(sys.path[0] + "/..")
 from MB import MBmidi,MBsetup  
 import time
 #  create PyMidi to initialize misi system.
@@ -37,7 +37,7 @@ def msb_lsb_raw(vvv):
 
 
 m,l=msb_lsb_raw(0)
-print hex(m*128+l)
+print( hex(m*128+l) )
 
 
 
@@ -52,7 +52,7 @@ def pan(val):
     inst.set_cc(98, 17)
     
     msb,lsb=msb_lsb_bipolar(val)
-    print hex(msb),hex(lsb)       
+    print (hex(msb),hex(lsb)  )     
     inst.set_cc(DATA_LSB_CC, lsb)
     inst.set_cc(DATA_MSB_CC, msb)    
     
@@ -64,7 +64,7 @@ def initialFilterQ(val):
     inst.set_cc(98, 9)
     
     msb,lsb=msb_lsb_raw(val)
-    print "Q:",hex(msb*128+lsb)       
+    print ("Q:",hex(msb*128+lsb) )      
     inst.set_cc(DATA_LSB_CC, lsb)
     inst.set_cc(DATA_MSB_CC, msb)    
     
@@ -93,7 +93,7 @@ q=960
 
 while True:
    for q in range(0,96000,1000):  
-     print hex(q)  
+     print (hex(q) ) 
      initialFilterQ(q)
      initialFilterFc(1500)
      inst.note_on(pitch, 120)

@@ -10,7 +10,7 @@ def callback():
     if tref==None:
         tref=time.time()
 
-    print (time.time()-tref)-cnt
+    print((time.time()-tref)-cnt )
     cnt+=1
 
 dt=1.0
@@ -28,7 +28,7 @@ def f():
     while True:
         x=math.cos(x+1)
 
-print "Hello"
+print ("Hello")
 
 import multiprocessing
 

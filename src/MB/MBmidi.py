@@ -9,10 +9,6 @@ import pygame.midi
 import threading
 import time
 import atexit
-# import MBsetup
-
-
-
 
 
 NOTEON=9
@@ -68,7 +64,7 @@ class MidiEngine(threading.Thread):
                         
                 if dev.output:
                 
-                    if name in dev.name:
+                    if name in str(dev.name):
                         print("OPENING MIDI OUT", dev.id,dev.name)
 
                         midi_out_id=dev.id
@@ -90,7 +86,7 @@ class MidiEngine(threading.Thread):
                         
                 if dev.input:
         
-                    if name in dev.name:
+                    if name in str(dev.name):
                         print ("OPENING MIDI IN", dev.id,dev.name)
                         midi_in_id=dev.id
                         o=pygame.midi.Input(midi_in_id, 0)
@@ -282,7 +278,7 @@ if __name__ == "__main__":
 
     mid=MidiEngine()
     
-    midi_out=mid.open_midi_out(["to ARGO Appli Fluidsynth v9 1","Synth input port (Qsynth1:0)","IAC Driver IAC Bus 1"])
+    midi_out=mid.open_midi_out(["IAC_MB"])
       
                 
     inst=Instrument(midi_out.out,0)  

@@ -1,6 +1,6 @@
-import MBmusic
+from MB import MBmusic
 import array
-import dlinkedlist
+from MB import dlinkedlist
 
 debug=True
 
@@ -62,7 +62,7 @@ class Phrasifier:
         """
         
         if debug:
-            print "visit_next"
+            print("visit_next")
             
         nxt=self.ptr.next
         if  nxt == None:
@@ -87,7 +87,7 @@ class Phrasifier:
                 self.phrases.append(phrase)
                 self.phrase_start=nxt
                 if debug:
-                    print "Notify "
+                    print( "Notify " )
                 if self.client:
                     self.client.notify(phrase)
                 
@@ -118,7 +118,7 @@ class Phrasifier:
             phrase=Phrase(self.phrase_start,self.ptr)
             self.phrases.append(phrase)
             self.phrase_start=None
-            print "phrased"
+            print( "phrased" )
             if self.client:
                 self.client.notify(phrase)
   
@@ -132,7 +132,7 @@ class BasicParser:
     def parse(self,toks,data):
         val=float(data[0])          
         pitch=int(toks[0])+32
-        print val,pitch
+        print( val,pitch )
         vel=int(val*127)
         return pitch,vel
     
@@ -207,7 +207,7 @@ class Player:
             if toks[0] == 'xy':
                 x=int(float(data[1])*127)
                 y=int(float(data[0])*127)
-                #print " melody xy",x,y
+                #print( " melody xy",x,y
                 self.messenger.inst.set_cc(12,x)
                 self.meesenger.inst.set_cc(13,y)
                 
@@ -217,7 +217,7 @@ class Player:
             pitch,vel=self.parser.parse(toks,data)
             
             
-            #print "play",pitch,vel
+            #print( "play",pitch,vel
   
             if vel != 0:
                 self.messenger.inst.note_on(pitch,vel)
@@ -232,7 +232,7 @@ class Player:
             
      
             # beat=band.seq.get_beat()
-            # print "STOMP",self.stamp
+            # print( "STOMP",self.stamp
             if self.beat_client and vel > 0:
                 self.beat_client.stomp(stamp)
         
@@ -289,7 +289,7 @@ class ChordPlayer:
             self.seq=seq
             
         def play(self,toks,data):
-#           print "chord",toks,data
+#           print( "chord",toks,data
             
             if toks == "xy":
                 y=int(float(data[0])*127)
@@ -341,7 +341,7 @@ class MelodyPlayer:
             if toks[0] == 'xy':
                 x=int(float(data[1])*127)
                 y=int(float(data[0])*127)
-                print " melody xy",x,y
+                print( " melody xy",x,y )
                 self.player.inst.set_cc(12,x)
                 self.player.inst.set_cc(13,y)
                 
@@ -353,7 +353,7 @@ class MelodyPlayer:
              
             i=int(toks[0])
             
-            #print "Melody ",val,i
+            #print( "Melody ",val,i
             vel=int(val*127)       
            
             
@@ -363,7 +363,7 @@ class MelodyPlayer:
             else:
                 pitch=i+48    
             
-            #print "play",pitch,vel
+            #print( "play",pitch,vel
             
             if vel != 0:
                 self.player.inst.note_on(pitch,vel)
@@ -445,7 +445,7 @@ class DelayedPlayer:
             if node and node.data:
                 toks=node.data[0]
                 data=node.data[1]
-                # print "---- PLAY ",self.tNow,toks,data
+                # print( "---- PLAY ",self.tNow,toks,data
                 self.player.play(toks,data) 
                 self.last=node                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
             else:
@@ -481,7 +481,7 @@ class PhrasePlayer:
         tNext=self.ptr.time+t_shift
         self.tloop=tloop
         while tNext<tNow:
-            print "ooops PhrasePlayer:start: too late"
+            print( "ooops PhrasePlayer:start: too late")
             tNext+=tloop;
             
         self.sched()
@@ -511,7 +511,7 @@ class PhrasePlayer:
         while True:
                 toks=self.ptr.data[0]
                 data=self.ptr.data[1]
-                # print "---- PLAY ",self.tNow,toks,data
+                # print( "---- PLAY ",self.tNow,toks,data
                 self.player.play(toks,data) 
                 if self.ptr == self.phrase.tail:
                     if self.tloop:
@@ -555,13 +555,13 @@ class PhrasePlayerFirer:
         if self.delay == None:
             context.freeze()
             self.delay=context.get_barlength()
-            print "Setting delay to bar length ",self.delay
+            print( "Setting delay to bar length ",self.delay)
             
             
         phraseLen=tNow-tTail  
         
         if phraseLen < self.delay:
-            print "Phrase ",phraseLen," is less than bar length estimate ",self.delay
+            print( "Phrase ",phraseLen," is less than bar length estimate ",self.delay)
             tloop=self.delay
         else:
             ii=int(phraseLen/self.delay)

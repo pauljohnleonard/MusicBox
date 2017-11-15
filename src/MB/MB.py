@@ -1,6 +1,6 @@
 import sys
 
-from .MBmusic import *
+
 from . import beatclient
 
 from . import MBmidi
@@ -8,7 +8,7 @@ from .MBsetup import *
 from .MBoscserver import *
 from .players import *
 from . import MBsetup
-
+from .MBmusic import Sequencer
 
 _context=None
 

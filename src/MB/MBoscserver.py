@@ -4,13 +4,12 @@ use the supplied cliet to pipe messages to the main application.
 
 """
 
-
-import OSC
+from pythonosc import udp_client
 import time, threading
 import socket
 import sys
 import traceback
-import MBsetup as MB
+from MB import MBsetup as MB
 
 
 class Server:
@@ -25,12 +24,16 @@ class Server:
 
         receive_address = addr
          
-        
+        dispatcher = dispatcher.Dispatcher()
+        dispatcher.map("/filter", print)
+        dispatcher.map("/volume", print_volume_handler, "Volume")
+        dispatcher.map("/logvolume", print_compute_handler, "Log volume", math.log)
         # OSC Server. there are three different types of server. 
         self.s = OSC.OSCServer(receive_address) # basic
         ##s = OSC.ThreadingOSCServer(receive_address) # threading
         ##s = OSC.ForkingOSCServer(receive_address) # forking
         
+        self.s = osc_server.ThreadingOSCUDPServer(("127.0.0.1","6666"), dispatcher)
         
         # this registers a 'default' handler (for unmatched messages), 
         # an /'error' handler, an '/info' handler.

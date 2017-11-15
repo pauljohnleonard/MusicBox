@@ -1,8 +1,7 @@
-from .MB import linklist
+from . import linkedlist
 import sys
 import time
 from threading import Thread
-from . import MBsetup as MB
 
 CSI="\x1B["
 RED='\033[91m'
@@ -12,13 +11,11 @@ SLEEP_TIME=0.001    # tick to yield in engine event loop
 
 class Engine(Thread):
 
-
     """Engine calls a call_back every tick (dt)
        The Engine will attempt to keep the tick synchrounized with
        real time using  a sleep (which will yield. to allow multithreading)
        For usage see Sequencer.
     """
-
 
     def __init__(self,dt,call_back=None):
         
@@ -192,7 +189,7 @@ class SequencerBPM(Engine):
         Engine.__init__(self,dt,self._play_next_dt)
         
         # self.prev is last event to be played
-        self.prev=self.sequence.head
+        self.sequence.head
         self.beats_per_sec=beats_per_sec        
         self.beat=0.0
         self.time=0.0
@@ -237,10 +234,16 @@ class SequencerBPM(Engine):
         if self.prev.next.time > self.beat:
             return
         
+
+        next=self.sequence.head.next
         # play pending events   
-        while self.prev.next.time <= self.beat:
-            self.prev=self.prev.next
-            self.prev.data.fire(self.prev.time)
+        while next.time  <= self.beat:        
+            next.data.fire(next.time)
+            next = next.next  
+   
+
+        self.sequence.head.next=next
+       
 
     def get_stamp(self):
         return self.beat

@@ -3,8 +3,8 @@ import platform
 machine=platform.system()
 
 
-MIDI_OUT_NAMES=["to ARGO Appli Fluidsynth v9 1","Synth input port (Qsynth1:0)","FluidSynth virtual port (Qsynth1)","IAC Driver IAC Bus 1",]
-MIDI_IN_NAMES=["MicroKey","microKEY-25 KEYBOARD","Pro24DSP MIDI","Keystation MIDI 1"]
+MIDI_OUT_NAMES=["Fluid","IAC_MB","to ARGO Appli Fluidsynth v9 1","Synth input port (Qsynth1:0)","FluidSynth virtual port (Qsynth1)","IAC Driver IAC Bus 1",]
+MIDI_IN_NAMES=["IAC_MB","MicroKey","microKEY-25 KEYBOARD","Pro24DSP MIDI","Keystation MIDI 1"]
 DEBUGGING=False
 
 

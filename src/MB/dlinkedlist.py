@@ -138,7 +138,7 @@ class DLinkedListIterator:
         self.list=mylist
         self.current=None
         
-        #print "Hello"
+        #print( "Hello"
   
     def seek(self,tt):
         """
@@ -160,7 +160,7 @@ class DLinkedListIterator:
             
     def next(self):
         
-        #print "Next"
+        #print( "Next"
         # if list is empty we need this
         if self.current == None:
             self.current=self.list.head
@@ -192,7 +192,7 @@ class DLinkedListGrazer:
         self.t2=t2
         self.t1=t1
         
-        #print "Hello"
+        #print( "Hello"
   
         #  possition ptr to be the first event at or after t1
         if self.list.tail == None or self.list.tail.time < t1:
@@ -240,11 +240,11 @@ class DLinkedListIteratorReversed:
         self.list=mylist
         self.current=None
         
-        #print "Hello"
+        #print( "Hello"
   
     def next(self):
         
-        #print "Next"
+        #print( "Next"
         # if list is empty we need this
         if self.current == None:
             self.current=self.list.tail
@@ -271,33 +271,33 @@ if __name__ == "__main__":
     mylist.append(4,"HELLO")
     
     iter.set_range(0,10)
-    
-    print"Hello :",iter.next()
+
+    print("Hello :",iter.next())
     
     
     
     
     iter.set_range(0,1)
     
-    print"None:",iter.next()
+    print("None:",iter.next())
 
     
     mylist.insert(3,"31",None)           
    
     iter.set_range(0,8)
-    print " THING:",iter.next()
+    print( " THING:",iter.next())
     
     iter.set_range(0,3)
-    print"None:",iter.next()
+    print("None:",iter.next())
     
 
     iter.set_range(0,5)
-    print"Thing:",iter.next()
-    print"None:",iter.next()
+    print("Thing:",iter.next())
+    print("None:",iter.next())
     
     iter.set_range(3,5)
-    print"Thing:",iter.next()
-    print"None:",iter.next()
+    print("Thing:",iter.next())
+    print("None:",iter.next())
     
         
     
@@ -316,10 +316,10 @@ if __name__ == "__main__":
         n=iter.next()
         if n == None:
             break
-        print n.data
+        print( n.data)
         
         
-    print "xxxxxxxxxxxxxxxxx"
+    print( "xxxxxxxxxxxxxxxxx")
         
         
         
@@ -330,7 +330,7 @@ if __name__ == "__main__":
 
 
     for x in mylist:
-        print x.time,x.data
-    print "=============="
+        print( x.time,x.data)
+    print( "==============" )
     for x in mylist.reverse():
-        print x.time,x.data
+        print( x.time,x.data)
