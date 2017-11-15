@@ -5,7 +5,7 @@ from . import beatclient
 
 from . import MBmidi
 from .MBsetup import *
-from .MBoscserver import *
+# from .MBoscserver import *
 from .players import *
 from . import MBsetup
 from .MBmusic import Sequencer
