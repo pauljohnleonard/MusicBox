@@ -1,7 +1,7 @@
 __author__ = 'pjl'
 
 
-import config
+from . import config
 import numpy
 
 

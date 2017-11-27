@@ -23,7 +23,7 @@ class PGDriver:
     def process(self,event):
         
             if event.type == pygame.QUIT or  (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                print "QUITING"
+                print ("QUITING")
                 self.running=False 
                 
             else: 
@@ -32,34 +32,34 @@ class PGDriver:
         
     def run(self):
         
-        print "PGDRIVER RUN"
+        print("PGDRIVER RUN")
         self.running=True
         while self.running:
             self.process(pygame.event.wait())
-        print "PGDRIVER QUIT"
+        print ("PGDRIVER QUIT")
         
             
             
     def stop(self):  
         pygame.event.clear()      
         pygame.quit()     #   TODO check that midi subsystem is notconfused by this
-        print " STOPPED"
+        print (" STOPPED")
     
 if __name__ == "__main__":
     
     class Client:
         
         def handle(self,event):
-            print event
+            print (event)
             
             
             
             
     pe=PGDriver(Client()) 
     pe.run()
-    print "EXITING"
+    print ("EXITING")
     sys.exit(-1)
-    print " EXITTED"
+    print (" EXITTED")
 #    pe.stop()
        
                       

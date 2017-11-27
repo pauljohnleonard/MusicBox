@@ -197,7 +197,7 @@ class SequencerBPM(Engine):
      
     def schedule(self,beat,event):
         # time=self.beat_to_time(beat)  
-        self.sequence.insert(beat,event,self.prev)
+        self.sequence.insert(beat,event)
 
 
 #        
@@ -231,7 +231,7 @@ class SequencerBPM(Engine):
         self.time+=self.dt
         self.beat+=self.beats_per_sec*self.dt
         # if next event is after at just return
-        if self.prev.next.time > self.beat:
+        if self.sequence.head.next.time > self.beat:
             return
         
 
@@ -332,7 +332,7 @@ class Groover:
         count is incremented each call.
     """
 
-    def __init__(self,start,seq,times,player,loop=None):
+    def __init__(self,start,seq,data,player,loop=None):
         
         """
         start:   time of groove start (first event is start+data[0])
@@ -342,7 +342,8 @@ class Groover:
         loop:    loop length OR None for single shot
         """ 
         
-        self.times=times
+        self.data=data
+        self.times=data.times
         self.seq=seq
         self.beat_ref=start
         self.count=0
@@ -364,7 +365,7 @@ class Groover:
         
         #print self.count," Groove fire",seq.beat
         
-        self.player.play_count(self.count,beat)
+        self.player.play_count(self.count,self.data,beat)
         self.count+=1
         if self.count >= self.n:
             if self.loop is None:

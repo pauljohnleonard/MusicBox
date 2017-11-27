@@ -1,15 +1,12 @@
 import sys
-sys.path.append('../MB')
+sys.path.append(sys.path[0] + "/..")
 
-import MB
+from MB import beatclient
+from MB.MBcontext import Context
+
 import subprocess
- 
-
 import time
-import beatclient
-import sys
 
-  
 
 
 class BeatObserver:
@@ -22,9 +19,7 @@ class BeatObserver:
         pass
         
 
-      
- 
-        
+          
 import wx
   
   
@@ -71,7 +66,7 @@ class MyFrame(wx.Frame):
         wx.Frame.__init__(self, parent, -1, title, pos, size)
 
 
-        context=MB.Context(beat_analysis=True)
+        context=Context(beat_analysis=True)
         self.context=context
         self.player_panels=[]
         melody_player=context.create_player(chan=0,pipe_to_beat=True)
@@ -95,7 +90,7 @@ class MyFrame(wx.Frame):
         self.timer=wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.update, self.timer)
      
-        print "TTT=",self.timer.Start(500)
+        print("TTT=",self.timer.Start(500))
           
           
         melody_player.set_ghost()  
@@ -153,7 +148,7 @@ class MyFrame(wx.Frame):
         
         self.bpm2=wx.StaticText(self,-1,"Bars Per Min * 4")
         self.bpm2_val=wx.StaticText(self,-1,"???")
-        midi_out=wx.StaticText(self,-1,"MidiOut:"+context.midi_out_dev.name)
+        midi_out=wx.StaticText(self,-1,"MidiOut:"+str(context.midi_out_dev.name))
       
         h1=wx.BoxSizer(wx.HORIZONTAL)
         v1 = wx.BoxSizer(wx.VERTICAL)
@@ -191,7 +186,7 @@ class MyFrame(wx.Frame):
         
    
     def OnClose(self,event):
-        print "CLosing"
+        print( "CLosing" )
         if self.pid != None:
             self.pid.terminate()
         
@@ -201,7 +196,7 @@ class MyFrame(wx.Frame):
         # wait for the pipes to flush
         time.sleep(.2)
         self.Destroy()
-        print "OnClose End"
+        print ("OnClose End")
      
 
 
@@ -211,6 +206,6 @@ mainFrame = MyFrame(None, title='PYO-GA', pos=(50,50), size=(800,300))
 mainFrame.Show()
 app.MainLoop()
 
-print " EXIT?"
+print (" EXIT?")
   
 

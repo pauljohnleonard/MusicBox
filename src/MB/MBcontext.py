@@ -5,7 +5,6 @@ from . import beatclient
 
 from . import MBmidi
 from .MBsetup import *
-# from .MBoscserver import *
 from .players import *
 from . import MBsetup
 from .MBmusic import Sequencer
@@ -29,7 +28,7 @@ class Context:
     def __init__(self,seqtype=Sequencer,beat_analysis=False):
         global _context
         assert _context == None
-        self.mid = MidiEngine()
+        self.mid = MBmidi.MidiEngine()
                               
         try:                      
             self.midi_out_dev = self.mid.open_midi_out(MIDI_OUT_NAMES)
@@ -80,7 +79,7 @@ class Context:
         """
         
         if map:
-            addr=MB.get_osc_ip()
+            addr=MBsetup.get_osc_ip()
             self.osc_driver=Server(addr,map,None)
             self.osc_driver.run()
             

@@ -9,7 +9,6 @@ import time, threading
 import socket
 import sys
 import traceback
-from MB import MBsetup as MB
 
 
 class Server:
@@ -115,9 +114,14 @@ class Server:
     
 if __name__ == "__main__":
    
-            
+    import sys
+
+    sys.path.append(sys.path[0] + "/..")
+
+
+    from MB import MBsetup 
              
-    addr=MB.get_osc_ip()
+    addr=MBsetup.get_osc_ip()
     server=Server(addr,None)        
     server.run()
 

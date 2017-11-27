@@ -1,5 +1,6 @@
 import sys
-
+import time
+sys.path.append(sys.path[0] + "/..")
 
 from MB import MBmusic
 
@@ -11,7 +12,7 @@ seq=MBmusic.SequencerBPM()
 class Player:
     
     def play_count(self,count,beat):
-        print count,seq.beat,beat
+        print (count,seq.beat,beat)
  
 
 times =   [0.3,  1.0, 2.0, 3.0]

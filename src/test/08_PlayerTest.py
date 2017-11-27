@@ -1,7 +1,12 @@
-from MB import MB
+import sys
+sys.path.append(sys.path[0] + "/..")
+
+from MB.MBcontext import Context
+from MB.MBsetup import PYTHON_CMD
+
 import subprocess
 
-context=MB.Context()
+context=Context()
 melody_player=context.create_player(chan=1,pipe_to_beat=False)
 melody_player.set_instrument('Piano')
 
@@ -9,5 +14,5 @@ map={"melody":melody_player.play}
         
 context.start(map)  
 
-pid=subprocess.Popen([MB.PYTHON_CMD, "pg_ui.py"])
+pid=subprocess.Popen([PYTHON_CMD, "pg_ui.py"])
 

@@ -1,12 +1,14 @@
 import sys
 
-import  config
+sys.path.append(sys.path[0] + "/..")
+
 from  MB import MBmidi
 from MB import MBmusic
 
 
 
-import brain
+from  . import  config, brain
+
 import atexit
 import numpy,math
 import time,random

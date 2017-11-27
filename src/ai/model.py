@@ -1,9 +1,10 @@
 __author__ = 'pjl'
 
+import sys
+sys.path.append(sys.path[0] + "/..")
 
+from . import config,rhythm
 
-
-import config,rhythm
 from MB import MBmusic
 
 # allow GUI to run even if sqlalchemy is absent
@@ -15,13 +16,11 @@ try:
     import database
     db_loaded = True
 except ImportError:
-    print "sqlalchemy  not found. No database capabilities."
+    print ("sqlalchemy  not found. No database capabilities.")
     db_loaded = False
 
 
-import sonify
-import brain
-import interpreter
+from . import sonify,brain,interpreter
 import random
 
 
@@ -137,7 +136,7 @@ class Model:
         mum=self.db.load_random()
         child=b.mate(mum,dad)
         self.pheno=child
-        print child
+        print (child)
         self.build_server_pheno()
 
     def save_pheno(self,evt):

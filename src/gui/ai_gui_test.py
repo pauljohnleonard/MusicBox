@@ -1,6 +1,11 @@
 
 
 import wx
+import sys
+sys.path.append(sys.path[0] + "/..")
+
+
+
 from ai import gui,model
  
 app = wx.App()

@@ -1,6 +1,9 @@
+import sys
+sys.path.append(sys.path[0] + "/..")
+
 import subprocess,inspect
 import atexit,time,queue,threading
-import MB
+from MB.MBsetup import PYTHON_CMD
 
 class Client:
     """
@@ -21,9 +24,9 @@ class Client:
         self.proc=None
       
         if graph:
-            cmd=MB.PYTHON_CMD+" -i MB/beatserver.py -g"
+            cmd=PYTHON_CMD+" -i MB/beatserver.py -g"
         else:
-            cmd=MB.PYTHON_CMD+" -i MB/beatserver.py"
+            cmd=PYTHON_CMD+" -i MB/beatserver.py"
             
     
         self.proc=subprocess.Popen([cmd],shell=True,

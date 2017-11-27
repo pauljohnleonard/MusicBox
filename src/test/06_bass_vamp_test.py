@@ -1,5 +1,7 @@
+
 import sys
 
+sys.path.append(sys.path[0] + "/..")
 
 
 from MB import MBmusic as music
@@ -82,7 +84,7 @@ try:
     
     seq.start()
     
-    xx = raw_input(" Hit CR TO QUIT")
+    xx = input(" Hit CR TO QUIT")
     
     seq.quit()
     mid.quit()
@@ -90,6 +92,6 @@ try:
 except MBmidi.MidiError as e:
     import traceback
     traceback.print_stack()
-    print e.get_message()
+    print (e.get_message())
 
  

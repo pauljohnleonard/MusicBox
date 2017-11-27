@@ -1,5 +1,6 @@
 import sys
-sys.path.append('../MB')
+sys.path.append(sys.path[0] + "/..")
+
 
 import MB
 import subprocess
@@ -10,8 +11,6 @@ import beatclient
 import sys
 
   
-
-
 class BeatObserver:
     
     def __init__(self,drum_player):
@@ -22,8 +21,6 @@ class BeatObserver:
         pass
         
 
-      
- 
         
 import wx
   
@@ -93,7 +90,7 @@ class MyFrame(wx.Frame):
         self.timer=wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.update, self.timer)
      
-        print "TTT=",self.timer.Start(500)
+        print ("TTT=",self.timer.Start(500))
           
         # responsible for starting to play a loop phrase
             
@@ -195,7 +192,7 @@ class MyFrame(wx.Frame):
         
    
     def OnClose(self,event):
-        print "CLosing"
+        print ("CLosing")
         if self.pid != None:
             self.pid.terminate()
         
@@ -205,7 +202,7 @@ class MyFrame(wx.Frame):
         # wait for the pipes to flush
         time.sleep(.2)
         self.Destroy()
-        print "OnClose End"
+        print ("OnClose End")
      
 
 
@@ -215,6 +212,6 @@ mainFrame = MyFrame(None, title='PYO-GA', pos=(50,50), size=(800,300))
 mainFrame.Show()
 app.MainLoop()
 
-print " EXIT?"
+print (" EXIT?")
   
 

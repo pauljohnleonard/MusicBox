@@ -1,4 +1,5 @@
-import config, rhythm
+
+from . import config, rhythm
 
 # allow GUI to run even if sqlalchemy is absent
 
@@ -10,7 +11,7 @@ try:
 
     db_loaded = True
 except ImportError:
-    print "sqlalchemy  not found. No database capabilities."
+    print( "sqlalchemy  not found. No database capabilities.")
     db_loaded = False
 
 
@@ -18,7 +19,7 @@ import wx,wx.lib.buttons
 import time
 
 # import threading
-import Queue
+import queue
 
 import wx.lib.scrolledpanel
 
@@ -156,7 +157,7 @@ class MyFrame(wx.Frame):
         try:
             text = client.q.get(block=False)
             self.console.AppendText(text)
-        except Queue.Empty:
+        except queue.Empty:
             pass
 
             #self.text=client.stdout.readline()
@@ -195,7 +196,7 @@ class MyFrame(wx.Frame):
         self.Layout()
 
     def cmd(self, ev):
-        print " CMD : ", self.cmdbox.GetValue()
+        print (" CMD : ", self.cmdbox.GetValue())
         strx = self.cmdbox.GetValue()
         eval(strx)
         self.cmdbox.Clear()
@@ -261,7 +262,7 @@ class MyFrame(wx.Frame):
 
 
     def OnClose(self, event):
-        print "Closing"
+        print ("Closing")
         if self.model:
             self.model.quit()
 

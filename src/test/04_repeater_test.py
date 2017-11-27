@@ -1,4 +1,7 @@
 import sys
+import time
+sys.path.append(sys.path[0] + "/..")
+
 
 from MB import MBmusic
 
@@ -12,7 +15,7 @@ if __name__ == "__main__":
     
     class Factory:
         def create(self,when):
-            print " Factory create",when
+            print (" Factory create",when)
             
     factory=Factory()
     
@@ -21,6 +24,5 @@ if __name__ == "__main__":
     seq.start()
     
 
-
-        
+time.sleep(1000)
     

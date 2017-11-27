@@ -32,7 +32,7 @@ class Client:
     
     def __init__(self):
         addr=MBsetup.get_osc_ip()
-        print "using ip", addr
+        print ("using ip", addr)
         self.osc_client=OSC.OSCClient()
         self.osc_client.connect(addr)
         
