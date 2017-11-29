@@ -1,20 +1,19 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+import time
 
 
 class Plotter:
     
     def __init__(self,x):
         self.x = x
-        plt.ion()
+      
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(111)
         self.line1=None
         self.line2=None
+#          self.ax.set_ylim([0,10])
 
-#         self.ax.set_ylim([0,10])
-    
         
     def draw(self,y,label,t_peak=None,y_peak=None):
         
@@ -31,10 +30,11 @@ class Plotter:
             self.line2.set_ydata(y_peak)
         self.ax.relim()
         self.ax.autoscale_view()
-        self.fig.canvas.draw()
-        
+        self.fig.canvas.draw_idle()
+        plt.draw()
         
 if __name__ == "__main__":
+    plt.ion()
     x=np.linspace(0, 6*np.pi, 100)
     p=Plotter(x)
     
@@ -53,4 +53,8 @@ if __name__ == "__main__":
         w=np.convolve(z, win, mode="same")   
         p.draw(w[n-1:],str(cnt))
         cnt+=1
-    
+        time.sleep(1)
+        print(cnt)
+
+   
+time.sleep(10000)

@@ -63,9 +63,9 @@ if __name__ == "__main__":
     
     for i in range(44):
         c.append(i)
-        print c.get_window()
+        print (c.get_window())
         
     
     c.append_array([1,2,3,5,6])
     
-    print c.get_window()
+    print( c.get_window())

@@ -5,7 +5,7 @@ sys.path.append(sys.path[0] + "/..")
 
 
 from MB import MBmusic as music
-from MB import MBmidi 
+from MB import MBmidi
 from MB import MBsetup
 
 
@@ -24,6 +24,7 @@ try:
     start=0
     
     score = music.Score(bars_per_section,beats_per_bar,key)
+    
     score.set_tonality(music.I, 0)
     score.set_tonality(music.vi, 1) 
     score.set_tonality(music.ii, 2)

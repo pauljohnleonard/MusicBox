@@ -9,7 +9,7 @@ from .players import *
 from . import MBsetup
 from .MBmusic import Sequencer
 
-_context=None
+_context = None
 
 
 class MBError:

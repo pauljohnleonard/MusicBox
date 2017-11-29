@@ -39,10 +39,7 @@ import plotter
 
 class Stomper:
     """
-    Kepps a history of events in a quatized circular buffer
-    
-    
-    
+    Kepps a history of events in a quantized circular buffer
     """
     
     def __init__(self,dt,dur):
@@ -55,7 +52,6 @@ class Stomper:
         self.time=0
         
     def add_event(self,time,val):
-        
         
         ptr_next=int(time/self.dt)
         ptr_now=self.buf.get_count()
@@ -134,6 +130,7 @@ class Analysis:
             sep=","
             
         sys.stdout.write("]\n")
+      
 
      
     def add_average_peak(self,bt,bp):
@@ -212,9 +209,7 @@ class Analysis:
 #             
 #         return period
         
-def stomp(time):
-    stomper.add_event(time,1.0)
-    analysis.doit()
+
    
 
 
@@ -222,8 +217,7 @@ import getopt
 
 import sys
 
-graph=False
-test_me=True
+graph=True
 
 for arg in sys.argv[1:]:
     if arg =='-g':
@@ -233,7 +227,7 @@ for arg in sys.argv[1:]:
         test_me=True
 
 spread=.2 
-dt=.02   
+dt=.1   
 nspread=int(spread/dt) 
 T=6.0
 
@@ -250,6 +244,17 @@ stomper= Stomper(dt,T)
 analysis=Analysis(stomper)
 
 
+stomper.add_event(.5,1.0)
+stomper.add_event(1.,1.0)
+stomper.add_event(1.5,1.0)
+stomper.add_event(2.0,1.0)
+stomper.add_event(2.5,1.0)
+
+print (time.time())
+analysis.doit()
+print (time.time())
+
+time.sleep(1000)
 
     
     

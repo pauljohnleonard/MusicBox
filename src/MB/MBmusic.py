@@ -3,11 +3,11 @@ import sys
 import time
 from threading import Thread
 
-CSI="\x1B["
-RED='\033[91m'
+CSI = "\x1B["
+RED = '\033[91m'
 ENDC = '\033[0m'
 
-SLEEP_TIME=0.001    # tick to yield in engine event loop
+SLEEP_TIME = 0.001    # tick to yield in engine event loop
 
 class Engine(Thread):
 
@@ -429,7 +429,6 @@ class Repeater:
      
      
 class Score:
- 
  
     def __init__(self, nbars,beats_per_bar,key):
         self.beats_per_bar = beats_per_bar 
