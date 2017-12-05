@@ -119,9 +119,9 @@ if __name__ == "__main__":
     sys.path.append(sys.path[0] + "/..")
 
 
-    from MB import MBsetup 
+    from MB import setup 
              
-    addr=MBsetup.get_osc_ip()
+    addr=setup.get_osc_ip()
     server=Server(addr,None)        
     server.run()
 

@@ -5,7 +5,7 @@ sys.path.append(sys.path[0] + "/..")
 
 from . import config,rhythm
 
-from MB import MBmusic
+from MB import music
 
 # allow GUI to run even if sqlalchemy is absent
 
@@ -90,9 +90,9 @@ class Model:
 
 
        # sequencer will call the rhythm generator tick every dt
-        self.seq=MBmusic.SequencerBPM()
+        self.seq=music.SequencerBPM()
         self.set_bpm(config.INIT_BPM)
-        self.groover = MBmusic.Groover(0.0,self.seq,times,self,loop=1.0)
+        self.groover = music.Groover(0.0,self.seq,times,self,loop=1.0)
         self.channels=[]
 
         for i in channel_ids:

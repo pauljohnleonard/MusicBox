@@ -2,8 +2,8 @@ import sys
 
 sys.path.append(sys.path[0] + "/..")
 
-from  MB import MBmidi
-from MB import MBmusic
+from  MB import midi
+from MB import music
 
 
 
@@ -26,10 +26,10 @@ class Sonify:
     
     def __init__(self,channel_ids):
        
-        self.tonality=MBmusic.ii
-        self.key=MBmusic.D
+        self.tonality=music.ii
+        self.key=music.D
                
-        self.mid=MBmidi.MidiEngine()
+        self.mid=midi.MidiEngine()
 
         try:
             midi_out=self.mid.open_midi_out(MIDI_OUT_NAMES)
@@ -44,7 +44,7 @@ class Sonify:
 
 # bank 0
         for i in channel_ids:
-            inst=MBmidi.Instrument(midi_out.out,i)
+            inst=midi.Instrument(midi_out.out,i)
             inst.set_reverb(70)
             inst.set_volume(127)
             self.insts[i]=inst

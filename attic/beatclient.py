@@ -3,7 +3,7 @@ sys.path.append(sys.path[0] + "/..")
 
 import subprocess,inspect
 import atexit,time,queue,threading
-from MB.MBsetup import PYTHON_CMD
+from MB.setup import PYTHON_CMD
 
 class Client:
     """

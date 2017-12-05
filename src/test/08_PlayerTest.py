@@ -1,8 +1,8 @@
 import sys
 sys.path.append(sys.path[0] + "/..")
 
-from MB.MBcontext import Context
-from MB.MBsetup import PYTHON_CMD
+from MB.context import Context
+from MB.setup import PYTHON_CMD
 
 import subprocess
 

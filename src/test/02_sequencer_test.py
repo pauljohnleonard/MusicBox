@@ -1,10 +1,10 @@
 import sys
 
-from MB import MBmusic
+from MB import music
 import time
 
 dt=0.005   
-seq=MBmusic.SequencerBPM()
+seq=music.SequencerBPM()
 
 
 class Event:

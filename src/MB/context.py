@@ -3,11 +3,11 @@ import sys
 
 from . import beatclient
 
-from . import MBmidi
-from .MBsetup import *
+from . import midi
+from .setup import *
 from .players import *
-from . import MBsetup
-from .MBmusic import Sequencer
+from . import setup
+from .music import Sequencer
 
 _context = None
 
@@ -28,12 +28,12 @@ class Context:
     def __init__(self,seqtype=Sequencer,beat_analysis=False):
         global _context
         assert _context == None
-        self.mid = MBmidi.MidiEngine()
+        self.mid = midi.MidiEngine()
                               
         try:                      
             self.midi_out_dev = self.mid.open_midi_out(MIDI_OUT_NAMES)
         except MidiError:
-            MBsetup.start_midi_synth()
+            setup.start_midi_synth()
             time.sleep(8)
             self.midi_out_dev = self.mid.open_midi_out(MIDI_OUT_NAMES)
             
@@ -79,7 +79,7 @@ class Context:
         """
         
         if map:
-            addr=MBsetup.get_osc_ip()
+            addr=setup.get_osc_ip()
             self.osc_driver=Server(addr,map,None)
             self.osc_driver.run()
             
@@ -100,7 +100,7 @@ class Context:
         """
         func --- Call back called on same thread as midi so don't do too much here
         """
-        MBmusic.Repeater(start,period,self.seq,func)
+        music.Repeater(start,period,self.seq,func)
         
     
     def freeze(self):

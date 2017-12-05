@@ -1,15 +1,15 @@
     
-import MBmidi   
-import MBsetup
+import midi   
+import setup
 import OSC
  
 #  create PyMidi to initialize misi system.
 
 
 
-mid=MBmidi.MidiEngine()
+mid=midi.MidiEngine()
 
-midi_in=mid.open_midi_in(MBsetup.MIDI_IN_NAMES)   
+midi_in=mid.open_midi_in(setup.MIDI_IN_NAMES)   
             
      
         
@@ -34,9 +34,9 @@ def myhandler(evts):
         print (e)
         cmd1=e[0]>>4
         
-        if cmd1 == MBmidi.NOTEON:
+        if cmd1 == midi.NOTEON:
             vel=e[2]
-        elif cmd1 == MBmidi.NOTEOFF:
+        elif cmd1 == midi.NOTEOFF:
             vel=0.0
         else:
             continue
@@ -51,7 +51,7 @@ def myhandler(evts):
         osc_client.send(msg)
     
  
-addr=MBsetup.get_osc_ip()
+addr=setup.get_osc_ip()
 print "using ip", addr
 osc_client=OSC.OSCClient()
 osc_client.connect(addr)

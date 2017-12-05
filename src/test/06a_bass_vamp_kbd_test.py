@@ -1,32 +1,32 @@
 import sys
-from MB import MBmusic,MBmidi,MBsetup
+from MB import music,midi,setup
 import math
 import traceback
 
 try:
-    mid = MBmidi.MidiEngine()
+    mid = midi.MidiEngine()
     
-    midi_out_dev = mid.open_midi_out(MBsetup.MIDI_OUT_NAMES)
+    midi_out_dev = mid.open_midi_out(setup.MIDI_OUT_NAMES)
     
     
-    seq = MBmusic.SequencerBPM(beats_per_sec=1.0)
+    seq = music.SequencerBPM(beats_per_sec=1.0)
     
     # Score
     beats_per_bar=4
     bars_per_section=1
-    key=MBmusic.G
+    key=music.G
     start=0
     
-    score = MBmusic.Score( bars_per_section,beats_per_bar,key)
-    score.set_tonality(MBmusic.I, 0)
+    score = music.Score( bars_per_section,beats_per_bar,key)
+    score.set_tonality(music.I, 0)
     
 
     # MetroNome
-    accent = MBmusic.NoteOn(61, 100)
-    weak = MBmusic.NoteOn(60, 80)
+    accent = music.NoteOn(61, 100)
+    weak = music.NoteOn(60, 80)
     metro_inst = midi_out_dev.allocate_channel(9)
     
-    #metro = MBmusic.Metro(0, 4,seq, metro_inst, accent, weak) 
+    #metro = music.Metro(0, 4,seq, metro_inst, accent, weak) 
     
     # bass line
 
@@ -41,15 +41,15 @@ try:
 
 
     bass_inst = midi_out_dev.allocate_channel(1)  
-    bass_player = MBmusic.BassPlayer(seq, bass_inst, score,30,48)
+    bass_player = music.BassPlayer(seq, bass_inst, score,30,48)
     bass_data=BassData()
-    bass_factory=MBmusic.GrooverFactory(seq,bass_data,bass_player)
-    MBmusic.Repeater(0, 4, seq, bass_factory.create) 
+    bass_factory=music.GrooverFactory(seq,bass_data,bass_player)
+    music.Repeater(0, 4, seq, bass_factory.create) 
     
     # Vamp
        
     vamp_inst = midi_out_dev.allocate_channel(0)
-    vamp = MBmusic.ChordPlayer(seq, vamp_inst, score, 60,[0,1,2,3])
+    vamp = music.ChordPlayer(seq, vamp_inst, score, 60,[0,1,2,3])
 
     class VampData:
         
@@ -61,11 +61,11 @@ try:
             
    
     vamp_data=VampData()
-    factory=MBmusic.GrooverFactory(seq,vamp_data,vamp)   
-    MBmusic.Repeater(0, 4, seq, factory.create) 
+    factory=music.GrooverFactory(seq,vamp_data,vamp)   
+    music.Repeater(0, 4, seq, factory.create) 
     
     solo_inst=midi_out_dev.allocate_channel(2)
-    solo_player=MBmusic.Messenger(solo_inst)
+    solo_player=music.Messenger(solo_inst)
     # ready to go
     
     seq.start()
@@ -75,7 +75,7 @@ try:
         def set_push1(self,i,val):
             print "set tonality",i,val
             if val > 0:
-                score.set_tonality(MBmusic.tonalities[((i-1)*5)%7])
+                score.set_tonality(music.tonalities[((i-1)*5)%7])
 
         def set_xy(self,x,y):
             print "set xy",x,y
@@ -93,7 +93,7 @@ try:
                 solo_inst.note_on(pitch,vel)
             else:
                 # schedule the note off
-                playable = MBmusic.Playable(MBmusic.NoteOff(pitch), solo_player)
+                playable = music.Playable(music.NoteOff(pitch), solo_player)
                 seq.add_after(.1, playable)
             
     wrapper=Wrapper()
@@ -103,7 +103,7 @@ try:
         ii=int(xx)
         if ii < 0:
             break
-        score.set_tonality(MBmusic.tonalities[ii])
+        score.set_tonality(music.tonalities[ii])
     
   
     

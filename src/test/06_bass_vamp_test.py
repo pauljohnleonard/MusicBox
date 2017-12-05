@@ -4,15 +4,15 @@ import sys
 sys.path.append(sys.path[0] + "/..")
 
 
-from MB import MBmusic as music
-from MB import MBmidi
-from MB import MBsetup
+from MB import music as music
+from MB import midi
+from MB import setup
 
 
 try:
-    mid = MBmidi.MidiEngine()
+    mid = midi.MidiEngine()
     
-    midi_out_dev = mid.open_midi_out(MBsetup.MIDI_OUT_NAMES)
+    midi_out_dev = mid.open_midi_out(setup.MIDI_OUT_NAMES)
     
     
     seq = music.SequencerBPM(beats_per_sec=2)
@@ -90,7 +90,7 @@ try:
     seq.quit()
     mid.quit()
     
-except MBmidi.MidiError as e:
+except midi.MidiError as e:
     import traceback
     traceback.print_stack()
     print (e.get_message())

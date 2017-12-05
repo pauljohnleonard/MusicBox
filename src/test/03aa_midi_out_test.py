@@ -1,17 +1,17 @@
 import sys
   
-from MB import MBmidi, MBsetup  
+from MB import midi, setup  
 import time
 #  create PyMidi to initialize misi system.
 
 
 
-mid=MBmidi.MidiEngine()
+mid=midi.MidiEngine()
 
-midi_out=mid.open_midi_out(MBsetup.MIDI_OUT_NAMES)
+midi_out=mid.open_midi_out(setup.MIDI_OUT_NAMES)
   
             
-inst=MBmidi.Instrument(midi_out.out,0)     
+inst=midi.Instrument(midi_out.out,0)     
 
  
 NRPN_MSB_CC=99

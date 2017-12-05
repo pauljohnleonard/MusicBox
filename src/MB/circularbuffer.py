@@ -10,7 +10,7 @@ class CircularBuffer():
     def __init__(self , n , dtype = 'f'):
       
         self.array = np.zeros(n*2 , dtype = dtype)
-        self.tail=n
+        self.head = n-1    # start of second half of aray
         self.N=n
         self.cnt=0
        
@@ -20,19 +20,18 @@ class CircularBuffer():
         appends a value to the end of the buffer.
         """
         self.cnt+=1
-        if self.tail < self.N*2:   # not at the end just insert a value.
-            self.array[self.tail] = a
-            self.tail += 1
-        else:                      # hist the end. copy second half to the buffer start and set pointer to append from there 
+        self.head += 1
+        if self.head == self.N*2:  
             self.array[:self.N] = self.array[self.N:]
-            self.array[self.N] = a
-            self.tail = self.N + 1
+            self.head = self.N 
+
+        self.array[self.head] = a
   
     def replace(self, a):
         """
         Replace the last value.
         """
-        self.array[self.tail] = a
+        self.array[self.head] = a
             
     def append_array(self,a):
         """
@@ -45,24 +44,26 @@ class CircularBuffer():
         """
         return the last value we appended
         """
-        return self.array[self.tail]
+        return self.array[self.head]
         
     def get_window(self):
         """
         Return an array containing the history 
         """
-        return self.array[self.tail-self.N:self.tail]
+        return self.array[self.head-self.N+1:self.head+1]
 
     def get_count(self):
         return self.cnt 
     
 if __name__ == "__main__": 
-    n=10          
+    n=5          
     
     c  = CircularBuffer( n, dtype = 'f')
     
     for i in range(44):
         c.append(i)
+        c.get_head()
+
         print (c.get_window())
         
     

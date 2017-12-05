@@ -1,5 +1,5 @@
 import players
-import MBmusic
+import music
 
 # deprecated just us a dictionary 
 
@@ -31,7 +31,7 @@ class Mapper:
         print "MAP: tonality",toks,data
         
         if val2 >= 0:
-            self.score.set_tonality(MBmusic.tonalities[(val2)%7])
+            self.score.set_tonality(music.tonalities[(val2)%7])
      
         
     def chord(self,toks,data):

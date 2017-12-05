@@ -2,7 +2,7 @@ import sys
 sys.path.append(sys.path[0] + "/..")
 
 from MB import beatclient
-from MB.MBcontext import Context
+from MB.context import Context
 
 import subprocess
 import time

@@ -1,4 +1,4 @@
-from MB import MBcontext
+from MB import context
 import subprocess,time
 
 context=MB.Context()

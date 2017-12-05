@@ -1,25 +1,25 @@
 import sys
-
+sys.path.append(sys.path[0] + "/..")
     
-from MB import MBmidi,MBsetup 
+from MB import midi,setup 
  
 #  create PyMidi to initialize misi system.
 
 # Note since midi input runs on 
 
-mid=MBmidi.MidiEngine()
+mid=midi.MidiEngine()
 
 try:
 
-    midi_out=mid.open_midi_out(MBsetup.MIDI_OUT_NAMES)
-    midi_in=mid.open_midi_in(MBsetup.MIDI_IN_NAMES)   
+    midi_out=mid.open_midi_out(setup.MIDI_OUT_NAMES)
+    midi_in=mid.open_midi_in(setup.MIDI_IN_NAMES)   
        
      
         
     # define input and output channels
     # adjust these for hardware reported by above
     
-    print midi_in,midi_out
+    print(midi_in,midi_out)
     
     
     #evts=[[[0b10110000,0,120],0],[[0b10110000,32,0],0]]
@@ -46,11 +46,11 @@ try:
     # start deamon
     mid.start()
     
-    tt=raw_input("Hit cr to quit:")
+    tt=input("Hit cr to quit:")
     #wait a few secs then halt
 
-except MBmidi.MidiError,e:
-    print e
+except midi.MidiError:
+    print(" MIDI ERROR ")
 
 finally:
     mid.quit()

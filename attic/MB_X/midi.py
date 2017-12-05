@@ -2,7 +2,7 @@ import pygame.midi
 import threading
 import time
 import atexit
-# import MBsetup
+# import setup
 
 
 NOTEON=9

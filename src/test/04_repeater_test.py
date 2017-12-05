@@ -3,13 +3,13 @@ import time
 sys.path.append(sys.path[0] + "/..")
 
 
-from MB import MBmusic
+from MB import music
 
   
 if __name__ == "__main__":    
     
         
-    seq=MBmusic.Sequencer()
+    seq=music.Sequencer()
         
     
     
@@ -19,7 +19,7 @@ if __name__ == "__main__":
             
     factory=Factory()
     
-    mess=MBmusic.Repeater(3,2.5,seq,factory.create)
+    mess=music.Repeater(3,2.5,seq,factory.create)
     
     seq.start()
     

@@ -1,6 +1,6 @@
 import sys
 
-from MB import MBmusic
+from MB import music
 import time
 
 cnt=0
@@ -14,7 +14,7 @@ def callback():
     cnt+=1
 
 dt=1.0
-engine=MBmusic.Engine(dt,callback)
+engine=music.Engine(dt,callback)
 
 
 engine.start()

@@ -7,7 +7,7 @@ import sys
 import pgdriver
 from pygame import * 
 import OSC
-from  MB import MBsetup
+from  MB import setup
 
 
 
@@ -31,7 +31,7 @@ class Client:
     
     
     def __init__(self):
-        addr=MBsetup.get_osc_ip()
+        addr=setup.get_osc_ip()
         print ("using ip", addr)
         self.osc_client=OSC.OSCClient()
         self.osc_client.connect(addr)

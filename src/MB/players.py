@@ -1,5 +1,5 @@
-from MB import MBmusic
 import array
+from MB import music
 from MB import dlinkedlist
 
 debug=True
@@ -185,7 +185,7 @@ class Player:
                 
             self.inst=inst
             self.seq=seq
-            self.messenger=MBmusic.Messenger(inst)
+            self.messenger=music.Messenger(inst)
             if memory:
                 self.list=dlinkedlist.OrderedDLinkedList()
         # put a dummy head to avoid special cases.
@@ -335,7 +335,7 @@ class MelodyPlayer:
             self.inst=inst
             self.seq=seq
             self.context=context
-            self.player=MBmusic.Messenger(inst)
+            self.player=music.Messenger(inst)
         
         def play(self,toks,data):     
             if toks[0] == 'xy':
@@ -370,7 +370,7 @@ class MelodyPlayer:
             else:
                 self.player.inst.note_off(pitch)
                 # schedule the note off
-                #playable = MBmusic.Playable(MBmusic.NoteOff(pitch), self.player)
+                #playable = music.Playable(music.NoteOff(pitch), self.player)
                 #self.seq.schedule(beat+0.05, playable)
     
     

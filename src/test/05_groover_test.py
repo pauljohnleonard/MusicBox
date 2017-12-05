@@ -2,11 +2,11 @@ import sys
 import time
 sys.path.append(sys.path[0] + "/..")
 
-from MB import MBmusic
+from MB import music
 
 
     
-seq=MBmusic.SequencerBPM()
+seq=music.SequencerBPM()
     
 
 class Player:
@@ -20,7 +20,7 @@ times =   [0.3,  1.0, 2.0, 3.0]
 player=Player()
 when=0.0
 
-groover=MBmusic.Groover(when,seq,times,player,loop=4)
+groover=music.Groover(when,seq,times,player,loop=4)
 
 
 

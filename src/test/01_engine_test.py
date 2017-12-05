@@ -1,6 +1,6 @@
 import sys
 sys.path.append(sys.path[0] + "/..")
-from MB import MBmusic
+from MB import music
 import time
 
 def callback():
@@ -8,7 +8,7 @@ def callback():
     
 
 dt=1.0
-engine=MBmusic.Engine(dt,callback)
+engine=music.Engine(dt,callback)
 tref=time.time()
 engine.start()
 time.sleep(1000)
