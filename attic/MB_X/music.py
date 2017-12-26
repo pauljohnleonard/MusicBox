@@ -73,7 +73,7 @@ class Engine(Thread):
             # yeild to other threads
                 time.sleep(sleep_time)
             else:
-                print '>',
+                print 'under '+sleep_time,
                    
             self.call_back()
             tnext+=self.dt

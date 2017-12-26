@@ -1,26 +1,22 @@
 import sys
 sys.path.append(sys.path[0] + "/..")
 import time
+import random
 
-from MB.stomper import Analysis,Stomper 
-from MB import midi,setup 
- 
-#  create PyMidi to initialize misi system.
+from MB.stomper import Analysis,Stomper
+from MB import midi,setup,music,sequencer
 
-# Note since midi input runs on 
+mid = midi.MidiEngine()
+seq = sequencer.Sequencer()
+dev = mid.open_midi_out(setup.MIDI_OUT_NAMES)
 
-mid=midi.MidiEngine()
+#  MetroNome
+inst = midi.Instrument(dev.out,9)
+accent = music.NoteOn(61,100)
+weak = music.NoteOn(60,80)
+metro = music.Metro(0,4,seq,inst,accent,weak)
 
-# bpmMax=180
-# bpmMin=40
-
-# periodMax=60.0/bpmMin
-# periodMin=60.0/bpmMax
-
-# nnMax=int(periodMax/dt)
-# nnMin=int(periodMin/dt)
-
-
+seq.start()
 
 analysis=Analysis(dt=.01,input_window_duration=20,spread=.1,noise_floor=50)
 
@@ -52,21 +48,21 @@ try:
     while(1):
         time.sleep(1)
         t = time.time() - tref
-        
+        peaks = analysis.doit(t)
         print("-------------")
 
-        periods=analysis.find_periods(t)
-        for p in periods:
+
+        for p in analysis.periods:
             print(p)
-                
-        if (len(periods)>0):
-            phases=analysis.find_phases(periods[0])
-            print(" Phases ")
-            for p in phases:
-                print(p)
+
+        for p in analysis.periods:
+            print(p)
+
+
 
 except midi.MidiError:
     print(" MIDI ERROR ")
 
 finally:
     mid.quit()
+

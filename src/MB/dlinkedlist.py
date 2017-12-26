@@ -321,13 +321,6 @@ if __name__ == "__main__":
         
     print( "xxxxxxxxxxxxxxxxx")
         
-        
-        
-        
-        
-    
-
-
 
     for x in mylist:
         print( x.time,x.data)
