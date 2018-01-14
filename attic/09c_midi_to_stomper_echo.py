@@ -1,9 +1,10 @@
+import time
 import sys
 sys.path.append(sys.path[0] + "/..")
-import time
 
-from MB.stomper import Analysis,Stomper 
-from MB import midi,setup,stomper_plot
+
+from MB.stomper import Analysis, Stomper
+from MB import midi, setup, stomper_plot, sequencer, music
  
 #  create PyMidi to initialize misi system.
 
@@ -27,6 +28,8 @@ plot = stomper_plot.StomperPlot(analysis)
 
 
 tref=time.time()
+phrase=music.Phrase()
+
 
 def tNow():
     return time.time()-tref
@@ -40,11 +43,13 @@ try:
 
     def myhandler(evts):
         val=0
+        t = tNow()          
+
         for evt in evts:
+            phrase.append(t,evt)    
             if evt[0][0] == 144:
                 val += evt[0][2]
             
-        t = tNow()          
         analysis.stomper.add_event(t,val)
 
 
@@ -52,21 +57,39 @@ try:
     mid.set_callback(myhandler) 
     # start deamon
     mid.start()
-    
-    while(1):
 
+    class Hub:
+
+        def __init__(self):
+            self.cnt=0
+
+        def callback(self):
+            self.cnt += 1
+            if self.cnt% 100 == 0:
+                print(self.cnt)
+
+
+    hub=Hub()
+    engine=sequencer.Engine(0.01,hub.callback)
+    engine.run()
+
+
+    while(1):
+   
+        
         #    print("-------------")
         t = tNow()          
         periods=analysis.find_periods(t)
-        
+    
         for p in periods:
             print(p)
                 
         if (len(periods)>0):
-          
+    
             plot.update()
-            plot.pause(.5)
-          
+            plot.pause(.01)
+
+
 except midi.MidiError:
     print(" MIDI ERROR ")
 

@@ -13,20 +13,30 @@ class CircularBuffer():
         self.head = n-1    # start of second half of aray
         self.N=n
         self.cnt=0
+
        
 
     def append(self, a):
         """
         appends a value to the end of the buffer.
+        
+        [description]
         """
-        self.cnt+=1
-        self.head += 1
-        if self.head == self.N*2:  
-            self.array[:self.N] = self.array[self.N:]
-            self.head = self.N 
+       
+ 
+        try:
+            self.cnt+=1
+            self.head += 1
+            if self.head == self.N*2:  
+                self.array[:self.N] = self.array[self.N:]
+                self.head = self.N 
 
-        self.array[self.head] = a
-  
+            self.array[self.head] = a
+        finally:
+          #  self.lock.release()
+            pass
+
+
     def replace(self, a):
         """
         Replace the last value.

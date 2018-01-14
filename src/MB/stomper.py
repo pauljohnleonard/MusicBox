@@ -2,6 +2,7 @@ import time
 import math
 import random
 import numpy
+import  threading 
 from scipy import signal
 
 import sys
@@ -24,26 +25,33 @@ class Stomper:
         self.buffer=CircularBuffer(self.n)
         self.dt=dt
         self.time=0
-    
+        self.lock=threading.Lock()
+
     def add_event(self,time,val):
         
-        ptr_next=int(time/self.dt)
-        ptr_now=self.buffer.get_count()
-        # print ptr_next,ptr_now          
-        
-        if ptr_now == ptr_next:
-            val_old=self.buffer.get_head()
-            if (val > val_old):
-                self.buffer.replace(val)
-        else:
-            while ptr_now < ptr_next: 
-                self.buffer.append(0.0)
-                #print "0:", self.buffer.get_count()
-                ptr_now+=1
-                
-            #print "1:", self.buffer.get_count()
-            self.buffer.append(val)
-        
+        # I think midi handler runs on real time thread so better mke sure we don't have concurency problems       
+        self.lock.acquire()
+
+        try:
+            ptr_next=int(time/self.dt)
+            ptr_now=self.buffer.get_count()
+            # print ptr_next,ptr_now          
+            
+            if ptr_now == ptr_next:
+                val_old=self.buffer.get_head()
+                if (val > val_old):
+                    self.buffer.replace(val)
+            else:
+                while ptr_now < ptr_next: 
+                    self.buffer.append(0.0)
+                    #print "0:", self.buffer.get_count()
+                    ptr_now+=1
+                    
+                #print "1:", self.buffer.get_count()
+                self.buffer.append(val)
+        finally:
+            self.lock.release()
+
         
 
 class Analysis:
@@ -68,6 +76,7 @@ class Analysis:
         self.dt=dt
         self.min_period=min_period
         self.max_period=max_period
+        self.periods=[]
 
     def find_periods(self,tnow):
         #print "DOIT",self.stomper.buffer.get_window()
@@ -77,12 +86,14 @@ class Analysis:
         self.input=self.stomper.buffer.get_window()
         
         self.input_spread=numpy.convolve(self.input,self.spread_win,mode="full")
-        input_self_correlated=numpy.correlate(self.input_spread, self.input_spread, mode="full")
+
+        input_self_correlated=numpy.correlate(self.input_spread, self.input_spread, mode="same")
+        
         # print(input_self_correlated.size)
      
-        z=input_self_correlated[(input_self_correlated.size-1)//2:]
+        self.correlated=input_self_correlated[(input_self_correlated.size-1)//2:]
 
-        peaks  = self.find_peaks(z,self.t)
+        peaks  = self.find_peaks(self.correlated,self.t)
         peaks2 = self.filter_peaks(min_gap=.1,peaks=peaks)
 
 
@@ -95,20 +106,14 @@ class Analysis:
             if (pk[0] < self.min_period):
                 continue
 
-            if base_period == None:    # TODO try others to se if they fit into the series better than the min
-                if (pk[0] > self.max_period):
-                    continue
-                
-                base_period=pk[0]
-                
-            xi = pk[0] / round(pk[0]/base_period)
-            periods.append(xi)
+         
+            periods.append(pk)
 
             if pk[0] > self.input_window_duration / 4 :
                 break
 
-        return numpy.array(periods)
-
+        self.periods=numpy.array(periods)
+        return self.periods
 
 
     def find_average_peak(self,bt,bp):
@@ -175,7 +180,7 @@ class Analysis:
             minI=1
             
         if maxI == None:
-            maxI=len(t)-2
+            maxI=len(z)-2
             
         for i in range(minI+1,maxI-1):
             if z[i-1]<=z[i]>=z[i+1] and z[i] > self.noise_level: 
@@ -227,38 +232,42 @@ class Analysis:
         
         return p2
 
+
+
+
 if __name__ == "__main__": 
     
-    import plotter
+    import stomper_plot
 
-    plot= plotter.Plotter(ny=4)
+
+   
 
     NOISE=0.0
-    PERIOD=.6
+    PERIOD=.713
     PROB=1.0
-
+    DT=0.01
+    PHASE=.23
 
     def r():
        return (NOISE*(random.random()-0.5))
 
 
-    analysis=Analysis(dt=0.01,input_window_duration=20.0,spread=.1,noise_floor=0.1)
+    analysis=Analysis(dt=DT,input_window_duration=20.0,spread=.1,noise_floor=0.1)
+    plot = stomper_plot.StomperPlot(analysis)
     stomper = analysis.stomper
 
-    for i in range(2):
+    for i in range(20):
         tt=PERIOD*(i+1)+r()
         if random.random() < PROB:
             stomper.add_event(tt,1.0)
  
     
     t=time.time()
-    tt += .21
+    tt += PHASE
 
     periods=analysis.find_periods(tt)
     n=analysis.n
     
-   
-
 
     print("ACTUAL PHASE="+str(tt%PERIOD))
 
@@ -270,12 +279,10 @@ if __name__ == "__main__":
         phases=analysis.find_phases(PERIOD)
         print(" Phases ")
         for p in phases:
-            print(p)
+            print(p % PERIOD)
     
-    plot.doplot([analysis.t,analysis.t_spread,analysis.t[:len(analysis.sampler)],analysis.phase_cor_t],
-                    [analysis.input,analysis.input_spread,analysis.sampler,analysis.phase_cor])
 
-
+    plot.update()
 
     plot.pause(1000)
     print(time.time()-t)

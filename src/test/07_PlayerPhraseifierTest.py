@@ -1,16 +1,20 @@
-from MB import context
+import sys
 import subprocess,time
+sys.path.append(sys.path[0] + "/..")
 
-context=MB.Context()
+from MB import context,midi,music,players
+
+
+context=context.Context()
 melody_player=context.create_player(chan=1)
 echo_player=context.create_player(chan=2)
 
 melody_player.set_instrument('Piano')
 
-accent=MB.NoteOn(61,100)
-weak=MB.NoteOn(60,80)
+accent=music.NoteOn(61,100)
+weak=music.NoteOn(60,80)
 metro_player=context.create_player(chan=9)
-metro=MB.Metro(0,4,context.seq,metro_player.inst,accent,weak)
+metro=music.Metro(0,4,context.seq,metro_player.inst,accent,weak)
 
 map={"melody":melody_player.play}
         
@@ -31,7 +35,7 @@ class Client:
 #         tstart=phrase.head.
         player=MB.PhrasePlayer(phrase,echo_player)
         player.start(4)
-        print "Phrase ing "
+        print ("Phrase ing ")
         
         
 client=Client()

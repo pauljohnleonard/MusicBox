@@ -1,10 +1,11 @@
+import sys
+sys.path.append(sys.path[0] + "/..")
     
-import midi   
-import setup
-import OSC
- 
-#  create PyMidi to initialize misi system.
+from MB import midi,setup
+from MB import oscserver as OSC
 
+ 
+#  create PyMidi to initialize midi system.
 
 
 mid=midi.MidiEngine()
@@ -16,7 +17,7 @@ midi_in=mid.open_midi_in(setup.MIDI_IN_NAMES)
 # define input and output channels
 # adjust these for hardware reported by above
 
-print midi_in
+print(midi_in)
 
 
     
@@ -46,13 +47,13 @@ def myhandler(evts):
         cmd="/"+str(chan)+"/melody/"+str(e[1])
         
 
-        print cmd,vel
+        print (cmd,vel)
         msg=OSC.OSCMessage(cmd,[vel/128.0])            
         osc_client.send(msg)
     
  
 addr=setup.get_osc_ip()
-print "using ip", addr
+print ("using ip", addr)
 osc_client=OSC.OSCClient()
 osc_client.connect(addr)
 # register the handler

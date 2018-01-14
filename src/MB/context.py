@@ -1,13 +1,15 @@
 import sys
+sys.path.append(sys.path[0] + "/..")
 
 
-from . import beatclient
+
+#from . import beatclient
 
 from . import midi
 from .setup import *
 from .players import *
 from . import setup
-from .music import Sequencer
+from . import sequencer
 
 _context = None
 
@@ -25,17 +27,19 @@ class MBError:
    
 class Context:
         
-    def __init__(self,seqtype=Sequencer,beat_analysis=False):
+    def __init__(self,seqtype=sequencer.Sequencer,beat_analysis=False):
         global _context
         assert _context == None
         self.mid = midi.MidiEngine()
                               
         try:                      
             self.midi_out_dev = self.mid.open_midi_out(MIDI_OUT_NAMES)
-        except MidiError:
-            setup.start_midi_synth()
-            time.sleep(8)
-            self.midi_out_dev = self.mid.open_midi_out(MIDI_OUT_NAMES)
+        except midi.MidiError:
+            print( " PLEASE RUN QSYNTH ")
+            sys.exit(1)
+            # setup.start_midi_synth()
+            # time.sleep(8)
+            # self.midi_out_dev = self.mid.open_midi_out(MIDI_OUT_NAMES)
             
             
         self.seq = seqtype()

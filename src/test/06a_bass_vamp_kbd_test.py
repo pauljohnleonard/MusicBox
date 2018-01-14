@@ -1,7 +1,11 @@
-import sys
-from MB import music,midi,setup
 import math
 import traceback
+import sys
+
+sys.path.append(sys.path[0] + "/..")
+
+from MB import music,midi,setup,sequencer
+
 
 try:
     mid = midi.MidiEngine()
@@ -9,7 +13,7 @@ try:
     midi_out_dev = mid.open_midi_out(setup.MIDI_OUT_NAMES)
     
     
-    seq = music.SequencerBPM(beats_per_sec=1.0)
+    seq = sequencer.SequencerBPM(beats_per_sec=1.0)
     
     # Score
     beats_per_bar=4
@@ -73,15 +77,15 @@ try:
     class Wrapper:
         
         def set_push1(self,i,val):
-            print "set tonality",i,val
+            print ("set tonality",i,val)
             if val > 0:
                 score.set_tonality(music.tonalities[((i-1)*5)%7])
 
         def set_xy(self,x,y):
-            print "set xy",x,y
+            print ("set xy",x,y)
             
         def set_accel(self,x,y,z):
-            print "accel ",x,y,z
+            print ("accel ",x,y,z)
             
             
         def set_push2(self,i,val):
@@ -99,8 +103,8 @@ try:
     wrapper=Wrapper()
     
     while True:
-        xx=raw_input("Enter root: [0-6]")
-        ii=int(xx)
+        xx=input("Enter root: [0-6]")
+        ii=int(xx)%7
         if ii < 0:
             break
         score.set_tonality(music.tonalities[ii])

@@ -8,9 +8,9 @@ MIDI_IN_NAMES=["Nord Stage 2 MIDI Output","IAC_MB","MicroKey","microKEY-25 KEYBO
 DEBUGGING=False
 
 
-# def get_osc_ip():
+def get_osc_ip():
 #     if True:
-#         return "127.0.0.1",7110
+         return "127.0.0.1",7110
 #     else:
 
 
@@ -41,9 +41,9 @@ DEBUGGING=False
     
 # import subprocess
 
-# def start_midi_synth():
-#     if machine == "Linux":
-#         p = subprocess.Popen('qsynth', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#def start_midi_synth():
+#    if machine == "Linux":
+#    p = subprocess.Popen('qsynth', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     
 #def EQUALS(x,y):
 #    return abs(x-y)<1e-4 

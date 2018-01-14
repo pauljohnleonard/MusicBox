@@ -1,3 +1,8 @@
+import sys
+sys.path.append(sys.path[0] + "/..")
+
+from MB import dlinkedlist
+
 class Playable:
     
     """
@@ -13,20 +18,36 @@ class Playable:
 
 
  
+
+
 class Phrase:
-    """
-    Is a list of Messages with times
-    """
-    def __init__(self,period=None):
-        self.list=linkedlist.OrderedLinkedList()
-        self.period=period
-        
-    def add(self,time,mess):
-        self.list.insert(time,mess)
+    
+    def __init__(self):
+        self.list=dlinkedlist.OrderedDLinkedList()
+
+    def append(self,time,mess):
+        self.list.append(time,mess)
  
          
     def __iter__(self):
         return self.list.__iter__()
+
+
+
+# class Phrase:
+#     """
+#     Is a list of Messages with times
+#     """
+#     def __init__(self,period=None):
+#         self.list=linkedlist.OrderedLinkedList()
+#         self.period=period
+        
+#     def add(self,time,mess):
+#         self.list.insert(time,mess)
+ 
+         
+#     def __iter__(self):
+#         return self.list.__iter__()
 
         
 class Messenger:

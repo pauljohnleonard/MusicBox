@@ -29,31 +29,31 @@ class Engine(Thread):
         
     
     
+    # def run(self):
+    #     self.run2()
+        
+    # def run1(self):
+    #     self.running=True
+        
+    #     tnext=tnow=time.time()
+        
+    #     while self.running:
+            
+    #         # spin until next tick
+            
+    #         while tnow < tnext:
+    #             # yeild to other threads
+    #             time.sleep(SLEEP_TIME) 
+    #             tnow=time.time()       
+            
+    #         self.call_back()
+            
+            
+    #         self.tclock+=self.dt
+    #         tnext+=self.dt
+    
+    
     def run(self):
-        self.run2()
-        
-    def run1(self):
-        self.running=True
-        
-        tnext=tnow=time.time()
-        
-        while self.running:
-            
-            # spin until next tick
-            
-            while tnow < tnext:
-                # yeild to other threads
-                time.sleep(SLEEP_TIME) 
-                tnow=time.time()       
-            
-            self.call_back()
-            
-            
-            self.tclock+=self.dt
-            tnext+=self.dt
-    
-    
-    def run2(self):
         self.running=True
         
         

@@ -4,40 +4,48 @@ import numpy as np
 
 class Plotter:
 
-    def __init__(self,nx=1,ny=1):
+    def __init__(self,nx,ny,types,lims):
         plt.ion() 
         fig, ax = plt.subplots(nrows=ny,ncols=nx,sharex=True) 
-        self.ax = ax
-        self.line = None
+        if nx*ny> 1:
+            self.ax = ax
+        else:
+            self.ax =[ax]
+        self.lines = None
         self.fig=fig
-     
-        
+        self.types=types
+        self.lims=lims
+
     def doplot(self,x,y):
 
-        if isinstance(self.ax , (list, tuple, np.ndarray)):
-            if self.line is None:
-                self.line=[]
+        if self.lines is None:
+            self.lines=[]
 
-                for xx,yy,axx in zip(x,y,self.ax):
+            for xx,yy,axx,t,lim in zip(x,y,self.ax,self.types,self.lims):
 
-
-                    line, = axx.plot(xx, yy)
-                    self.line.append(line)
-
-            else:
-                for yy,line in zip(y,self.line):
-                    line.set_ydata(yy)
+                if t == 'stem':
+                    markerline, lines, baseline = axx.stem(xx, yy)
+                    axx.set_ylim(lim)
+        
+                else:
+                    lines = axx.plot(xx, yy)
+                self.lines.append(lines[0])
 
         else:
-            if self.line is None:
-                self.line, = self.ax.plot(x, y)
-            else:
-                self.line.set_ydata(y)
+            for yy,xx,line,axx,t,lim in zip(y,x,self.lines,self.ax,self.types,self.lims):
+
+                if t == 'stem':
+                      axx.cla()
+                      markerline, stemlines, baseline = axx.stem(xx, yy)
+                      axx.set_ylim(lim)
+                else:
+                    line.set_ydata(yy)
+                    line.set_xdata(xx)
+
 
 
         self.fig.canvas.draw()
         plt.show()
-        plt.pause(0.005)
 
     def pause(self,dur):
         plt.pause(dur)
@@ -47,18 +55,19 @@ if __name__ == "__main__":
     import time
     import numpy
 
-    dt=.01
+    dt=1
     dur=20
     n=dur//dt
-    plot = Plotter(1,1)
+    plot = Plotter(1,1,['stem'],[(0,10)])
    
     t=numpy.linspace(0, (n-1)*dt,num=n)
-    
-    for i in range(1):
-       
+
+    for i in range(2):
         y1 = t/(i+5)
         y2 = t/(i+10)
-        plot.doplot(t,y1)
-  
-    plot.pause(10000)
-  
+        plot.doplot([t],[y1])
+        plot.pause(.4)
+    
+    print ("X")
+    plot.pause(1000)
+    print ("Y")
