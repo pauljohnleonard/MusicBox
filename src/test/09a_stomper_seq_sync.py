@@ -1,11 +1,12 @@
 import sys
-sys.path.append(sys.path[0] + "/..")
 import time
 import random
+sys.path.append(sys.path[0] + "/..")
 
+
+from MB import pygui
 from MB.stomper import Analysis,Stomper
 from MB import midi,setup,music,sequencer
-from MB import stomper_plot
 from MB import tempo_decider
 
 mid = midi.MidiEngine()
@@ -23,9 +24,10 @@ metro = music.Metro(0,4,seq,inst,accent,weak)
 seq.start()
 
 
-
 analysis=Analysis(dt=.01,input_window_duration=20,spread=0.1,noise_floor=50)
-plot = stomper_plot.StomperPlotP(analysis)
+
+
+
 tref=time.time()
 
 try:
@@ -51,16 +53,48 @@ try:
     # start deamon
     mid.start()
  
-    while(1):
-        t = time.time() - tref          
-        periods=analysis.find_periods(t)            
-        tempo.process(periods)
-        print("\n1:",time.time() - t  - tref)
-        plot.update()
-        print("\n2:",time.time() - t  - tref)
-        plot.pause(10)
-       # time.sleep(.5)
- 
+
+
+
+    class Proc(Thread):
+
+        def __init__(self,gui):
+            Thread.__init__(self)
+            self.running=False
+            self.daemon=True
+            self.gui=gui
+    
+        def run(self):
+
+            while(1):
+                t = time.time() - tref          
+                periods=analysis.find_periods(t)                    
+                tempo.process(periods)
+
+                print("A")
+                if len(self.analysis.periods) >0:
+                    A=numpy.array(self.analysis.periods)
+                    AT=numpy.transpose(A)
+                    xx=[analysis.t,AT[0]]
+                    yy=[analysis.input,AT[1]]
+                    gui.doplot(xx,yy)
+                else:
+                    xx=[analysis.t,[0]]
+                    yy=[analysis.input,[0]]
+                    gui.doplot(xx,yy)
+            
+                print("\n2:",time.time() - t  - tref)
+       
+                time.sleep(0.5)
+                self.gui.draw([(1,2*random.random()),(2,3*random.random()),(3,1*random.random())])
+
+
+    gui = pygui.PygGUI((600,400),tmax=20,ymax=5)
+
+    proc=Proc(gui)
+    proc.start()
+    gui.run()
+
 
 except midi.MidiError:
     print(" MIDI ERROR ")
