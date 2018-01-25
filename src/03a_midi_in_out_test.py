@@ -1,5 +1,5 @@
-import sys
-sys.path.append(sys.path[0] + "/..")
+#import sys
+#sys.path.append(sys.path[0] + "/..")
     
 from MB import midi,setup 
  

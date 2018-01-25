@@ -1,6 +1,6 @@
 import array
 from MB import music
-from MB import dlinkedlist
+from util import dlinkedlist
 
 debug=True
 

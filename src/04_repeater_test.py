@@ -1,15 +1,11 @@
-import sys
+
+from MB import music,sequencer
 import time
-sys.path.append(sys.path[0] + "/..")
-
-
-from MB import music
-
   
 if __name__ == "__main__":    
     
         
-    seq=music.Sequencer()
+    seq=sequencer.Sequencer()
         
     
     

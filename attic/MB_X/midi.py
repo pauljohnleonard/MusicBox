@@ -150,7 +150,7 @@ class MidiEngine(threading.Thread):
             else:
                 time.sleep(0.001)
                  
-        print " quitting pygame.midi deamon"
+        print " quitting guipy.midi deamon"
             
     def _halt(self):
         

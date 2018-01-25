@@ -1,16 +1,19 @@
 import pygame
 import sys
-import os
 import time
 from threading import Thread
 import random
-#from pygame.locals import *
+import fontmgr
 
-import  threading 
+import  threading
+
+fontMgr = fontmgr.FontManager((('Courier New', 16), (None, 48), (None, 24), ('arial', 24)))
+
+
 class PygGUI:
 
     """
-    pygame frontend for events.
+    guipy frontend for events.
     delegates the interpretation of events to a user supplied cleint.
     """
 
@@ -18,24 +21,17 @@ class PygGUI:
        # threading.Thread.__init__(self)
         pygame.init()
 
-        self.w=dim[1]
-        self.h=dim[1]
-        self.margin=20
         self.display = pygame.display.set_mode(dim)
         self.clock=pygame.time.Clock()
-        self.surf = pygame.Surface(dim)
-    
+
         pygame.display.set_caption('Music Box')
         self.running = False
-        self.ybase=self.h-self.margin
-        self.xscale=(self.w - 2*self.margin)/tmax
-        self.yscale = - (self.h - 2*self.margin)/ymax
-        self.xoff = self.margin
-        self.yoff = self.h - self.margin
 
         self.lock=threading.Lock()
         self.fps=10
-        self.pts=[]
+        self.periodsurf=PeriodSurf(dim,tmax,ymax,(0,0),self.lock)
+        self.surfs=[self.periodsurf]
+
 
     def process(self, event):
 
@@ -54,15 +50,17 @@ class PygGUI:
                 return
   
             self.lock.acquire()
-            self._draw()    
-            self.display.blit(self.surf,(0,0))
-            pygame.display.flip()
+
+            for surf in self.surfs:
+                if (surf.dirty):
+                    surf.draw()
+                    self.display.blit(surf.surf,surf.pos)
+
             pygame.display.flip()
             self.clock.tick(self.fps)
-            print("DOING STUFF ")
             self.lock.release()
 
-            #self.process(pygame.event.wait())
+            #self.process(guipy.event.wait())
         
         
         print("PGDRIVER QUIT")
@@ -74,21 +72,66 @@ class PygGUI:
 
 
 
-    def _draw(self):
+class PeriodSurf:
+
+
+    def __init__(self,dim,tmax,ymax,pos,lock):
+
+        self.pos=pos
+        self.w = dim[0]
+        self.h = dim[1]
+        self.margin = 20
+
+        self.ybot = self.h - self.margin
+        self.xleft = self.margin
+
+        self.ytop = self.margin
+        self.xright = self.w - self.margin
+
+
+        self.xscale=(self.w - 2*self.margin)/tmax
+        self.yscale = - (self.h - 2*self.margin)/ymax
+        self.xoff = self.margin
+        self.yoff = self.h - self.margin
+        self.surf = pygame.Surface(dim)
+        self.dirty = True
+        self.pts = []
+        self.lock = lock
+
+    def draw(self):
         
         self.surf.lock()
         self.surf.fill((0,0,0))
 
+        pygame.draw.line(self.surf, (255, 255, 255), (self.xleft, self.ybot), (self.xleft, self.ytop))
+        pygame.draw.line(self.surf, (255, 255, 255), (self.xleft, self.ybot), (self.xright, self.ybot))
+
+
+
+
         for xx,yy in self.pts:
             x=xx*self.xscale+self.xoff
             y=yy*self.yscale+self.yoff
-            
-            pygame.draw.line(self.surf, (0,0,255), (x,self.yoff), (x,y) )
+
+            pygame.draw.line(self.surf, (0, 0, 255), (x, self.yoff), (x, y),2)
+
         self.surf.unlock()
-    
-    def draw(self,pts):
+        x = 0.0
+
+        while (1):
+            xscreen = x * self.xscale + self.xoff
+            if (x > self.xright):
+                break
+            text = str(x)
+            fontMgr.Draw(self.surf, 'Courier New', 16, text, (xscreen, self.ybot + 2), (20, 255, 255))
+            x += 1
+
+        self.dirty = False
+
+    def update(self, x,y):
         self.lock.acquire()
-        self.pts = pts
+        self.pts=zip(x,y)
+        self.dirty = True
         self.lock.release()
 
 

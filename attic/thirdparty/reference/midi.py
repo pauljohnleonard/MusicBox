@@ -60,7 +60,7 @@ __theclasses__ = ["Input", "Output"]
 
 def init():
     """initialize the midi module    atexit.register(self.halt)
-    pygame.midi.init(): return None
+    guipy.midi.init(): return None
     
     Call the initialisation function before using the midi module.
     
@@ -78,7 +78,7 @@ def init():
 
 def quit():
     """uninitialize the midi module
-    pygame.midi.quit(): return None
+    guipy.midi.quit(): return None
 
 
     Called automatically atexit if you don't call it.
@@ -91,15 +91,15 @@ def quit():
         _pypm.Terminate()
         _init = False
         del _pypm
-        #del pygame._pypm
+        #del guipy._pypm
 
 def _check_init():
     if not _init:
-        raise RuntimeError("pygame.midi not initialised.")
+        raise RuntimeError("guipy.midi not initialised.")
 
 def get_count():
     """gets the number of devices.
-    pygame.midi.get_count(): return num_devices
+    guipy.midi.get_count(): return num_devices
 
 
     Device ids range from 0 to get_count() -1
@@ -112,7 +112,7 @@ def get_count():
 
 def get_default_input_id():
     """gets default input device number
-    pygame.midi.get_default_input_id(): return default_id
+    guipy.midi.get_default_input_id(): return default_id
     
     
     Return the default device ID or -1 if there are no devices.
@@ -163,7 +163,7 @@ def get_default_input_id():
 
 def get_default_output_id():
     """gets default output device number
-    pygame.midi.get_default_output_id(): return default_id
+    guipy.midi.get_default_output_id(): return default_id
     
     
     Return the default device ID or -1 if there are no devices.
@@ -213,7 +213,7 @@ def get_default_output_id():
 
 def get_device_info(an_id):
     """ returns information about a midi device
-    pygame.midi.get_device_info(an_id): return (interf, name, input, output, opened) 
+    guipy.midi.get_device_info(an_id): return (interf, name, input, output, opened)
 
     interf - a text string describing the device interface, eg 'ALSA'.
     name - a text string for the name of the device, eg 'Midi Through Port-0'
@@ -511,7 +511,7 @@ class Output(object):
           (assuming o is an onput MIDI stream)
             o.write_sys_ex(0,'\\xF0\\x7D\\x10\\x11\\x12\\x13\\xF7')
           is equivalent to
-            o.write_sys_ex(pygame.midi.time(),
+            o.write_sys_ex(guipy.midi.time(),
                            [0xF0,0x7D,0x10,0x11,0x12,0x13,0xF7])
         """
         _check_init()
@@ -567,7 +567,7 @@ class Output(object):
 
 def time():
     """returns the current time in ms of the PortMidi timer
-    pygame.midi.time(): return time
+    guipy.midi.time(): return time
 
     The time is reset to 0, when the module is inited.
     """
@@ -576,10 +576,10 @@ def time():
 
 
 def midis2events(midis, device_id):
-    """converts midi events to pygame events
-    pygame.midi.midis2events(midis, device_id): return [Event, ...]
+    """converts midi events to guipy events
+    guipy.midi.midis2events(midis, device_id): return [Event, ...]
 
-    Takes a sequence of midi events and returns list of pygame events.
+    Takes a sequence of midi events and returns list of guipy events.
     """
     evs = []
     for midi in midis:
@@ -603,7 +603,7 @@ def midis2events(midis, device_id):
 
 
 class MidiException(Exception):
-    """exception that pygame.midi functions and classes can raise
+    """exception that guipy.midi functions and classes can raise
     MidiException(errno)
     """
     def __init__(self, value):

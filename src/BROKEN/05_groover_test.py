@@ -1,12 +1,16 @@
-import sys
-import time
-sys.path.append(sys.path[0] + "/..")
 
-from MB import music
+
+"""
+DEPRECATED OR FIXME
+
+"""
+import time
+
+from src.MB import music,sequencer
 
 
     
-seq=music.SequencerBPM()
+seq=sequencer.SequencerBPM()
     
 
 class Player:

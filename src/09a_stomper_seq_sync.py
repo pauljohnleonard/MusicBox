@@ -1,10 +1,10 @@
-import sys
 import time
+import threading
 import random
-sys.path.append(sys.path[0] + "/..")
 
 
-from MB import pygui
+import numpy
+from guipy import pygui
 from MB.stomper import Analysis,Stomper
 from MB import midi,setup,music,sequencer
 from MB import tempo_decider
@@ -24,11 +24,14 @@ metro = music.Metro(0,4,seq,inst,accent,weak)
 seq.start()
 
 
-analysis=Analysis(dt=.01,input_window_duration=20,spread=0.1,noise_floor=50)
+analysis=Analysis(dt=.01,input_window_duration=20,spread=0.1,noise_floor=0.001,min_period=0.8,max_period=8)
 
 
 
 tref=time.time()
+
+def myTime():
+    return time.time() - tref
 
 try:
 
@@ -38,11 +41,12 @@ try:
     # define a hander for midi events
 
     def myhandler(evts):
-        t = time.time() - tref
+        t = myTime()
         val=0
+        # print(evts)
         for evt in evts:
             if evt[0][0] == 144:
-                val += evt[0][2]
+                val += (evt[0][2]/127.0)
             
             
         analysis.stomper.add_event(t,val)
@@ -56,40 +60,34 @@ try:
 
 
 
-    class Proc(Thread):
+    class Proc(threading.Thread):
 
         def __init__(self,gui):
-            Thread.__init__(self)
+            threading.Thread.__init__(self)
             self.running=False
             self.daemon=True
             self.gui=gui
-    
+
         def run(self):
 
             while(1):
-                t = time.time() - tref          
-                periods=analysis.find_periods(t)                    
-                tempo.process(periods)
+                t = myTime()
+                periods=analysis.find_periods(t)
+                print("periods :",str(periods))
+                # tempo.process(periods)
+                # self.gui.updateInput(analysis.t, analysis.input)
 
-                print("A")
-                if len(self.analysis.periods) >0:
-                    A=numpy.array(self.analysis.periods)
+                if len(analysis.periods) >0:
+                    A=numpy.array(analysis.periods)
                     AT=numpy.transpose(A)
-                    xx=[analysis.t,AT[0]]
-                    yy=[analysis.input,AT[1]]
-                    gui.doplot(xx,yy)
-                else:
-                    xx=[analysis.t,[0]]
-                    yy=[analysis.input,[0]]
-                    gui.doplot(xx,yy)
-            
-                print("\n2:",time.time() - t  - tref)
-       
-                time.sleep(0.5)
-                self.gui.draw([(1,2*random.random()),(2,3*random.random()),(3,1*random.random())])
+                    self.gui.periodsurf.update(AT[0],AT[1])
 
 
-    gui = pygui.PygGUI((600,400),tmax=20,ymax=5)
+                time.sleep(1.0)
+
+
+
+    gui = pygui.PygGUI((600,400),tmax=8,ymax=40)
 
     proc=Proc(gui)
     proc.start()

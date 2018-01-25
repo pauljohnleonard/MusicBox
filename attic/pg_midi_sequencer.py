@@ -42,7 +42,7 @@ pygame.midi.init()
 _print_device_info()
 
 midi_in = pygame.midi.Input(midi_i)
-#window = pygame.display.set_mode((468, 60))
+#window = guipy.display.set_mode((468, 60))
 
 
 instruments=[6,28,13]
@@ -79,9 +79,9 @@ while going:
         midi_out.write(midi_events)
             
             
-        #mt = pygame.midi.time()
-        # convert them into pygame events.
-        #midi_evs = pygame.midi.midis2events(midi_events, midi_in.device_id)
+        #mt = guipy.midi.time()
+        # convert them into guipy events.
+        #midi_evs = guipy.midi.midis2events(midi_events, midi_in.device_id)
 
         #for m_e in midi_evs:
         #    event_post( m_e )

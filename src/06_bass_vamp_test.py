@@ -1,10 +1,7 @@
 
-import sys
-
-sys.path.append(sys.path[0] + "/..")
 
 
-from MB import music as music
+from MB import music,sequencer
 from MB import midi
 from MB import setup
 
@@ -15,7 +12,7 @@ try:
     midi_out_dev = mid.open_midi_out(setup.MIDI_OUT_NAMES)
     
     
-    seq = music.SequencerBPM(beats_per_sec=2)
+    seq = sequencer.SequencerBPM(beats_per_sec=2)
     
     # Score
     beats_per_bar=4

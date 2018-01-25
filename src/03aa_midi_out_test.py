@@ -1,9 +1,8 @@
-import sys
-sys.path.append(sys.path[0] + "/..")
-from MB import midi,setup  
-import time
-#  create PyMidi to initialize misi system.
 
+from MB import midi, setup  
+import time
+
+#  create PyMidi to initialize misi system.
 
 
 mid=midi.MidiEngine()
@@ -12,7 +11,7 @@ midi_out=mid.open_midi_out(setup.MIDI_OUT_NAMES)
   
             
 inst=midi.Instrument(midi_out.out,0)     
-inst.set_reverb(80)
+
  
 NRPN_MSB_CC=99
 NRPN_LSB_CC=98
@@ -37,13 +36,13 @@ def msb_lsb_raw(vvv):
 
 
 m,l=msb_lsb_raw(0)
-print( hex(m*128+l) )
+print hex(m*128+l)
 
 
 
 for i in range(-2000,2000):
     msb,lsb=msb_lsb_raw(i)
- #   print i,msb*128+lsb-0x2000
+    print i,msb*128+lsb-0x2000
     assert i == (msb*128+lsb)    
     
 
@@ -52,7 +51,7 @@ def pan(val):
     inst.set_cc(98, 17)
     
     msb,lsb=msb_lsb_bipolar(val)
-    print (hex(msb),hex(lsb)  )     
+    print hex(msb),hex(lsb)       
     inst.set_cc(DATA_LSB_CC, lsb)
     inst.set_cc(DATA_MSB_CC, msb)    
     
@@ -64,7 +63,7 @@ def initialFilterQ(val):
     inst.set_cc(98, 9)
     
     msb,lsb=msb_lsb_raw(val)
-    print ("Q:",hex(msb*128+lsb) )      
+    print "Q:",hex(msb*128+lsb)       
     inst.set_cc(DATA_LSB_CC, lsb)
     inst.set_cc(DATA_MSB_CC, msb)    
     
@@ -92,15 +91,15 @@ pitch=48
 q=960
 
 while True:
-   for q in range(0,96000,1000):  
-     print (hex(q) ) 
-     initialFilterQ(q)
-     initialFilterFc(1500)
-     inst.note_on(pitch, 120)
-     for f in range(1500,13500,200):
-        initialFilterFc(f)     
-        time.sleep(.01)
-        inst.note_off(pitch)
+    for q in range(0,96000,1000):  
+        print hex(q)  
+        initialFilterQ(q)
+        initialFilterFc(1500)
+        inst.note_on(pitch, 120)
+        for f in range(1500,13500,200):
+            initialFilterFc(f)     
+            time.sleep(.01)
+            inst.note_off(pitch)
     
     
 #wait a few secs then halt

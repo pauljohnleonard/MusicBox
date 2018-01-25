@@ -3,7 +3,7 @@ import numpy
 import sys
 sys.path.append(sys.path[0] + "/..")
 
-from MB.filters import Median
+from util.filters import Median
 
 class TempoDecider:
 

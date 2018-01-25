@@ -2,7 +2,7 @@ import sys
 import subprocess,time
 sys.path.append(sys.path[0] + "/..")
 
-from MB import context,midi,music,players
+from src.MB import context,midi,music,players
 
 
 context=context.Context()

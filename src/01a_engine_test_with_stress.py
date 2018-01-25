@@ -1,6 +1,6 @@
-import sys
 
-from MB import music
+
+from MB import sequencer
 import time
 
 cnt=0
@@ -14,7 +14,7 @@ def callback():
     cnt+=1
 
 dt=1.0
-engine=music.Engine(dt,callback)
+engine=sequencer.Engine(dt,callback)
 
 
 engine.start()

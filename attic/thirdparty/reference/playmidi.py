@@ -1,11 +1,11 @@
 # play an embedded midi music file on your computer's sound card
-# experiments with module pygame from: http://www.pygame.org/
+# experiments with module guipy from: http://www.pygame.org/
 # tested with Python25 and PyGame171      vegaseat      04sep2007
 
 """
 # use this short program to create the base64 encoded midi music string
 # (base64 encoding simply produces a readable string from binary data)
-# then copy and paste the result into your pygame program ...
+# then copy and paste the result into your guipy program ...
 import base64
 mid_file = "FishPolka.mid"
 print "mid64='''\\\n" + base64.encodestring(open(mid_file, 'rb').read()) + "'''"

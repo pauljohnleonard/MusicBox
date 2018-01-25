@@ -1,4 +1,4 @@
-from . import linkedlist
+from src.util import linkedlist
 import sys
 import time
 from threading import Thread
@@ -25,7 +25,7 @@ class Engine(Thread):
         Thread.__init__(self)
         self.running=False
         self.daemon=True
-        
+        self.sleep_min = 0.0
         
     
     
@@ -71,7 +71,8 @@ class Engine(Thread):
             # yeild to other threads
                 time.sleep(sleep_time)
             else:
-                print('>'+ str(sleep_time))
+                if (sleep_time < self.sleep_min):
+                    print('Sequencer late by ' + str(sleep_time) + '  secs')
                    
             self.call_back()
             tnext+=self.dt
@@ -100,11 +101,11 @@ class Sequencer(Engine):
     stamp is real time
     """
     
-    def __init__(self,dt=0.005):
+    def __init__(self,dt=0.01):
         """
         Create a Sequencer that services events at a rate of dt
         """     
-        self.sequence=linkedlist.OrderedLinkedList()        
+        self.sequence= linkedlist.OrderedLinkedList()
         self.sequence.insert(-sys.float_info.max,None,None)
         self.sequence.insert(sys.float_info.max,None,None)
         
@@ -182,7 +183,7 @@ class SequencerBPM(Engine):
     
     def __init__(self,beats_per_sec=1.0,dt=0.005):
                 
-        self.sequence=linkedlist.OrderedLinkedList()        
+        self.sequence= linkedlist.OrderedLinkedList()
         self.sequence.insert(-sys.float_info.max,None,None)
         self.sequence.insert(sys.float_info.max,None,None)
         

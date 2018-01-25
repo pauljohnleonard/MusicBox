@@ -1,12 +1,12 @@
-import sys
 import time
-sys.path.append(sys.path[0] + "/..")
-from MB import music,midi,MB
-from MB.players import *
+
+from MB import music,midi
+from MB import sequencer
+from MB import setup
 
 mid = midi.MidiEngine()
-seq = music.Sequencer()
-dev = mid.open_midi_out(MB.MIDI_OUT_NAMES)
+seq = sequencer.Sequencer()
+dev = mid.open_midi_out(setup.MIDI_OUT_NAMES)
 
 #  MetroNome
 inst = midi.Instrument(dev.out,9)

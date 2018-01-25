@@ -1,8 +1,11 @@
+"""
+DEPRECATED OR FIX ME
+"""
 import sys
 sys.path.append(sys.path[0] + "/..")
 
-from MB.context import Context
-from MB.setup import PYTHON_CMD
+from src.MB.context import Context
+from src.MB.setup import PYTHON_CMD
 
 import subprocess
 

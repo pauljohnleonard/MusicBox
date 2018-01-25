@@ -6,7 +6,7 @@ import  sys,os
 class PGDriver:
     
     """
-    pygame frontend for events.
+    guipy frontend for events.
     delegates the interpretation of events to a user supplied cleint.
     """
     

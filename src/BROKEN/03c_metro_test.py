@@ -1,11 +1,13 @@
-import sys
-sys.path.append('../MB')
+"""
+DEPreCATED OR FIX ME
 
-import MB
-import dlinkedlist
+"""
+
+from src.MB import context,sequencer,music
+from src.util import dlinkedlist
 
 
-context=MB.Context(seqtype=MB.SequencerBPM)
+context=context.Context(seqtype=sequencer.SequencerBPM)
 context.seq.set_bpm(100)
 
 pl=dlinkedlist.OrderedDLinkedList()
@@ -17,7 +19,7 @@ pl.append(2,("2",("1",)))
 pl.append(3,("2",("0.8",)))
 
 
-phrase=MB.Phrase(pl.head,pl.tail)
+phrase=music.Phrase(pl.head,pl.tail)
 
 player=context.create_player(chan=9,pipe_to_beat=False)
 
